@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintersert</title>
+    <style>
+        /* Base Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #ffffff; color: #111; }
+
+        /* Header */
+        header {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            box-shadow: 0 1px 0px rgba(0,0,0,0.05);
+        }
+        .logo { 
+            color: #e60023; 
+            font-size: 28px; 
+            font-weight: bold; 
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .search-bar-container { 
+            flex-grow: 1; 
+            display: flex; 
+            align-items: center;
+            gap: 10px;
+        }
+        .input-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+        input {
+            width: 100%;
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            background: #e9e9e9;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.2s;
+        }
+        input:focus { background: #d0d0d0; }
+
+        .btn-search {
+            background-color: #e60023;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-search:hover { background-color: #ad081b; }
+
+        /* Grid System */
+        main { padding: 20px; }
+        .gallery { column-count: 5; column-gap: 15px; }
+        @media (max-width: 1200px) { .gallery { column-count: 4; } }
+        @media (max-width: 900px) { .gallery { column-count: 3; } }
+        @media (max-width: 600px) { .gallery { column-count: 2; } }
+
+        .pin-card {
+            background: #fff;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            break-inside: avoid;
+            position: relative;
+            cursor: zoom-in;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .pin-card:hover { transform: scale(1.02); }
+        .pin-card img { width: 100%; display: block; transition: filter 0.3s; }
+        .pin-card:hover img { filter: brightness(0.85); }
+
+        /* Modal Detail */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            width: 95%;
+            max-width: 900px;
+            height: 80vh;
+            border-radius: 32px;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .modal-content { flex-direction: column; height: 90vh; overflow-y: auto; }
+        }
+
+        .modal-left { flex: 1.3; background: #f0f0f0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .modal-left img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .modal-right { flex: 1; padding: 40px; display: flex; flex-direction: column; background: white; }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .btn-group { display: flex; gap: 12px; align-items: center; }
+        
+        .btn-action {
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+        }
+        .btn-red { background: #e60023; color: white; }
+        .btn-grey { background: #efefef; color: #111; }
+        .btn-icon { 
+            background: #efefef; 
+            width: 45px; height: 45px; 
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+        }
+
+        .pin-title { font-size: 32px; font-weight: bold; margin-bottom: 15px; }
+        .pin-desc { color: #555; line-height: 1.6; font-size: 16px; margin-bottom: 30px; }
+
+        .user-section { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: #ddd; }
+        
+        .close-btn {
+            position: absolute;
+            top: 25px; left: 25px;
+            color: white; font-size: 40px; cursor: pointer;
+            z-index: 1001;
+        }
+
+        #loading { display: none; text-align: center; padding: 50px; color: #767676; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/dashboard" class="logo">Pintersert</a>
+        <div class="search-bar-container">
+            <div class="input-wrapper">
+                <input type="text" id="searchInput" placeholder="Cari gambar...">
+            </div>
+            <button class="btn-search" onclick="searchImages()">Cari</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="loading">Mencari ide...</div>
+        <div id="gallery" class="gallery"></div>
+    </main>
+
+    <div id="pinModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <div class="modal-left">
+                <img id="modalImg" src="" alt="View">
+            </div>
+            <div class="modal-right">
+                <div class="modal-header">
+                    <div class="btn-group">
+                        <button class="btn-icon">···</button>
+                        <button class="btn-action btn-grey" onclick="sharePin()">Bagikan</button>
+                    </div>
+                    <button class="btn-action btn-red" onclick="downloadImg()">Simpan</button>
+                </div>
+                
+                <h1 id="modalTitle" class="pin-title">Visual Inspirasi</h1>
+                <p id="modalDesc" class="pin-desc">Dikembangkan oleh ReyCloudDev untuk memberikan akses cepat ke berbagai inspirasi visual berkualitas tinggi.</p>
+
+                <div class="user-section">
+                    <div class="avatar"></div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 16px;">reypindev</div>
+                        <div style="font-size: 14px; color: #767676;">Web Developer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let currentUrl = "";
+
+        async function searchImages() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            const gallery = document.getElementById('gallery');
+            const loader = document.getElementById('loading');
+            gallery.innerHTML = '';
+            loader.style.display = 'block';
+
+            try {
+                const { data } = await axios.get("https://api.siputzx.my.id/api/s/pinterest", {
+                    params: { query, type: "image" }
+                });
+                if (data.status && data.data.length > 0) {
+                    data.data.forEach(item => {
+                        if (item.image_url) {
+                            const card = document.createElement('div');
+                            card.className = 'pin-card';
+                            card.innerHTML = `<img src="${item.image_url}" loading="lazy">`;
+                            card.onclick = () => openModal(item.image_url);
+                            gallery.appendChild(card);
+                        }
+                    });
+                }
+            } catch (err) { console.error(err); }
+            finally { loader.style.display = 'none'; }
+        }
+
+        function openModal(url) {
+            currentUrl = url;
+            document.getElementById('modalImg').src = url;
+            document.getElementById('pinModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('pinModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // FUNGSI DOWNLOAD DENGAN CUSTOM FILENAME
+        async function downloadImg() {
+            try {
+                const response = await fetch(currentUrl);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'reypindev.jpg'; // Filename custom
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                window.open(currentUrl, '_blank');
+            }
+        }
+
+        function sharePin() {
+            if (navigator.share) {
+                navigator.share({ title: 'Pinterser Image', url: currentUrl });
+            } else {
+                navigator.clipboard.writeText(currentUrl);
+                alert("Link disalin!");
+            }
+        }
+
+        window.onclick = (e) => { if (e.target == document.getElementById('pinModal')) closeModal(); }
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchImages();
+        });
+    </script>
+</body>
+</html>
