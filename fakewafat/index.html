@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Wafat Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #000000;
+            --card-bg: #0a0a0a;
+            --border-color: #1f1f1f;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-black);
+            color: #ffffff;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top, #111111 0%, #000000 80%);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:focus-within {
+            border-color: #333;
+            background: #0d0d0d;
+        }
+
+        .btn-primary {
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: 800;
+            padding: 16px 32px;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:disabled {
+            background-color: #333;
+            color: #666;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-download {
+            background-color: transparent;
+            border: 1px solid #333;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-download:hover {
+            background-color: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: #888;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-color: #444;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #10b981;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+
+        .input-field {
+            background: transparent;
+            border: none;
+            width: 100%;
+            color: white;
+            padding: 4px 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .input-field::placeholder {
+            color: #444;
+            font-weight: 400;
+        }
+
+        .input-field:focus {
+            outline: none;
+        }
+
+        .icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .terminal-box {
+            background: #050505;
+            border: 1px solid #141414;
+            font-family: 'Fira Code', monospace;
+        }
+
+        @keyframes pulse-border {
+            0% { border-color: #1f1f1f; }
+            50% { border-color: #ffffff; }
+            100% { border-color: #1f1f1f; }
+        }
+        .processing {
+            animation: pulse-border 1.2s infinite;
+        }
+    </style>
+</head>
+<body class="hero-gradient min-h-screen flex flex-col items-center py-12 px-6">
+
+    <!-- Navigation Header -->
+    <div class="w-full max-w-5xl flex justify-between items-center mb-10">
+        <a href="/dashboar" class="btn-back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Dashboard
+        </a>
+        <div class="status-badge flex items-center gap-2 uppercase">
+            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]"></span>
+            Api FakeWafat Active
+        </div>
+    </div>
+
+    <!-- Main Heading -->
+    <div class="text-center mb-14">
+        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+            Fake Wafat <br>
+            <span class="text-[#666666]">Generator Version.</span>
+        </h1>
+        <p class="text-[#888888] max-w-xl mx-auto text-lg md:text-xl font-medium leading-relaxed">
+            Hasilkan desain belasungkawa instan dengan kualitas HD. Masukkan data dan biarkan sistem kami memproses semuanya.
+        </p>
+    </div>
+
+    <!-- Interface Wrapper -->
+    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10">
+        
+        <!-- Input List Section -->
+        <div class="space-y-4">
+            
+            <div class="glass-card p-5">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="icon-box bg-indigo-500/20 text-indigo-400">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    </div>
+                    <span class="font-bold text-sm uppercase tracking-tight text-gray-300">1. Link Url Foto</span>
+                </div>
+                <input type="text" id="urlInput" placeholder="Tempel URL foto di sini..." class="input-field">
+            </div>
+
+            <div class="glass-card p-5">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="icon-box bg-pink-500/20 text-pink-400">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <span class="font-bold text-sm uppercase tracking-tight text-gray-300">2. Identitas Nama</span>
+                </div>
+                <input type="text" id="namaInput" placeholder="Nama Lengkap Almarhumah..." class="input-field">
+            </div>
+
+            <div class="glass-card p-5">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="icon-box bg-emerald-500/20 text-emerald-400">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                    <span class="font-bold text-sm uppercase tracking-tight text-gray-300">3. Tanggal Lahir</span>
+                </div>
+                <input type="text" id="lahirInput" placeholder="Contoh: 07-08-2006" class="input-field">
+            </div>
+
+            <div class="glass-card p-5">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="icon-box bg-orange-500/20 text-orange-400">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"></path><path d="M5 7h14"></path></svg>
+                    </div>
+                    <span class="font-bold text-sm uppercase tracking-tight text-gray-300">4. Tanggal Wafat</span>
+                </div>
+                <input type="text" id="wafatInput" placeholder="Contoh: 02-06-2026" class="input-field">
+            </div>
+
+            <button id="btnCreate" class="w-full btn-primary mt-6 flex items-center justify-center gap-2">
+                <span>Ubah Foto</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+            </button>
+        </div>
+
+        <!-- Output & Logs Section -->
+        <div class="space-y-4">
+            <!-- Terminal Output -->
+            <div class="terminal-box rounded-2xl p-5 h-44 relative">
+                <div class="flex gap-2 mb-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#1a1a1a]"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#1a1a1a]"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#1a1a1a]"></div>
+                </div>
+                <div id="terminalBody" class="text-[11px] font-mono text-[#555] space-y-1 overflow-y-auto max-h-[100px]">
+                    <p>> System idle. Awaiting user input...</p>
+                </div>
+            </div>
+
+            <!-- Result Frame -->
+            <div id="resultFrame" class="glass-card min-h-[350px] flex items-center justify-center relative overflow-hidden p-4">
+                <div id="placeholderView" class="text-center opacity-20">
+                    <svg class="w-20 h-20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em]">Awaiting Build</p>
+                </div>
+                
+                <img id="resultImg" class="hidden w-full h-auto rounded-xl shadow-2xl" alt="Generated Content">
+            </div>
+
+            <!-- Standalone Download Button Container -->
+            <div id="downloadContainer" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <button onclick="downloadImage()" class="btn-download flex items-center justify-center gap-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Hasil Foto
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-28 text-[#333] text-[10px] font-bold uppercase tracking-[0.4em] flex flex-col items-center">
+        <span>Powered by Ditzz & Api Endpoint</span>
+    </footer>
+
+    <script>
+        const btnCreate = document.getElementById('btnCreate');
+        const terminalBody = document.getElementById('terminalBody');
+        const resultImg = document.getElementById('resultImg');
+        const placeholderView = document.getElementById('placeholderView');
+        const resultFrame = document.getElementById('resultFrame');
+        const downloadContainer = document.getElementById('downloadContainer');
+
+        function addLog(text, color = 'text-[#555]') {
+            const p = document.createElement('p');
+            p.className = color;
+            p.innerHTML = `<span class="opacity-30 mr-2">$</span> ${text}`;
+            terminalBody.appendChild(p);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        btnCreate.addEventListener('click', async () => {
+            const data = {
+                url: document.getElementById('urlInput').value.trim(),
+                nama: document.getElementById('namaInput').value.trim(),
+                lahir: document.getElementById('lahirInput').value.trim(),
+                wafat: document.getElementById('wafatInput').value.trim()
+            };
+
+            if (!data.url || !data.nama || !data.lahir || !data.wafat) {
+                addLog('Error: Mohon lengkapi semua data urutan 1-4.', 'text-red-900');
+                return;
+            }
+
+            // Reset UI
+            btnCreate.disabled = true;
+            btnCreate.innerHTML = `Memproses...`;
+            downloadContainer.classList.add('hidden');
+            resultImg.classList.add('hidden');
+            placeholderView.classList.remove('hidden');
+            resultFrame.classList.add('processing');
+
+            // Sequential Logging
+            addLog('membuat foto fake wafat', 'text-blue-400');
+            await new Promise(r => setTimeout(r, 600));
+            addLog('proses menghubungkan ke server api', 'text-indigo-400');
+            await new Promise(r => setTimeout(r, 800));
+            addLog('generating foto fake wafat', 'text-amber-400');
+
+            const apiUrl = `https://api.ikyyxd.my.id/canvas/fakewafat?url=${encodeURIComponent(data.url)}&nama=${encodeURIComponent(data.nama)}&lahir=${encodeURIComponent(data.lahir)}&wafat=${encodeURIComponent(data.wafat)}`;
+
+            const img = new Image();
+            img.src = apiUrl;
+            img.onload = () => {
+                addLog('foto fake wafat berhasil dibuat', 'text-emerald-400 font-bold');
+                
+                resultImg.src = apiUrl;
+                resultImg.classList.remove('hidden');
+                placeholderView.classList.add('hidden');
+                resultFrame.classList.remove('processing');
+                
+                downloadContainer.classList.remove('hidden');
+                
+                btnCreate.disabled = false;
+                btnCreate.innerHTML = `<span>Ubah Foto</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>`;
+            };
+
+            img.onerror = () => {
+                addLog('Fatal: Server tidak merespon atau URL gambar salah.', 'text-red-600');
+                resultFrame.classList.remove('processing');
+                btnCreate.disabled = false;
+                btnCreate.innerHTML = `Ubah Foto`;
+            };
+        });
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.href = resultImg.src;
+            link.download = `FakeWafat_${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            addLog('Berhasil: Gambar telah disimpan ke perangkat.', 'text-white');
+        }
+    </script>
+</body>
+</html>
