@@ -1,312 +1,804 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NgapainBang?</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-body: #0f172a;
-            --primary: #8b5cf6;
-            --secondary: #ec4899;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --whatsapp: #25d366;
-            --telegram: #0088cc;
-            --instagram: #e1306c;
-            --pinterest: #e60023;
-            --spotify: #1DB954;
-            --danger: #ff4b2b;
-            --ai-color: #00f2ff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'Segoe UI', sans-serif;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+<title>ReyCloudDev</title>
 
-        /* HEADER */
-        .header {
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header h3 { letter-spacing: 1px; font-weight: 800; margin: 0; }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        .profile-trigger {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            cursor: pointer;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-        .profile-trigger:hover { transform: scale(1.1); box-shadow: 0 0 10px var(--primary); }
-        .profile-trigger img { width: 100%; height: 100%; object-fit: cover; }
+<style>
 
-        /* NEON BANNER */
-        .neon-border-box {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            height: 190px;
-            padding: 4px;
-            border-radius: 25px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
-        }
+:root{
+    --bg:#0f172a;
+    --card:#111827;
+    --primary:#8b5cf6;
+    --secondary:#ec4899;
+    --text:#f8fafc;
+    --soft:#94a3b8;
+}
 
-        .neon-border-box::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: conic-gradient(transparent, var(--primary), var(--secondary), var(--primary), transparent);
-            animation: rotateNeon 4s linear infinite;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
 
-        @keyframes rotateNeon {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+body{
+    background:
+    radial-gradient(circle at top right,#312e81 0%,transparent 25%),
+    radial-gradient(circle at bottom left,#831843 0%,transparent 25%),
+    var(--bg);
 
-        .banner-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            border-radius: 22px;
-            overflow: hidden;
-            z-index: 1;
-        }
+    color:var(--text);
 
-        .banner-video { width: 100%; height: 100%; object-fit: cover; }
+    min-height:100vh;
 
-        .banner-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 15px 20px;
-        }
+    padding:20px;
+    padding-bottom:120px;
+}
 
-        /* MODAL */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-        }
+/* PAGE */
+.page{
+    display:none;
+    animation:fade .3s ease;
+}
 
-        .profile-card {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 350px;
-            border-radius: 30px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
-            animation: slideUp 0.4s ease-out;
-        }
+.page.active{
+    display:block;
+}
 
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--secondary);
-        }
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-        .profile-img-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid var(--primary);
-            margin: 0 auto 15px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-        }
-        .profile-img-large img { width: 100%; height: 100%; object-fit: cover; }
+    margin-bottom:20px;
+}
 
-        .profile-card h2 { margin: 10px 0 5px; font-size: 22px; color: var(--text-main); }
-        .profile-card p { font-size: 14px; color: var(--secondary); font-weight: bold; margin-bottom: 20px; }
+.logo h1{
+    font-size:30px;
+    font-weight:800;
+}
 
-        .badge-dev {
-            background: var(--primary);
-            padding: 5px 15px;
-            border-radius: 10px;
-            font-size: 12px;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
+.logo span{
+    color:var(--secondary);
+}
 
-        /* GRID MENU */
-        .grid-container {
-            width: 100%;
-            max-width: 500px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
+.profile{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    overflow:hidden;
 
-        .tool-card {
-            background: var(--card-bg);
-            padding: 22px 15px;
-            border-radius: 24px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: inherit;
-        }
+    border:2px solid var(--primary);
+}
 
-        .tool-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .tool-card i { font-size: 28px; color: var(--primary); }
-        .tool-card span { font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 
-        .section-label {
-            width: 100%;
-            max-width: 500px;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--secondary);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+/* BANNER */
+.banner{
+    width:100%;
+    height:220px;
 
-        /* CUSTOM COLORS */
-        .ai-card i { color: var(--ai-color); filter: drop-shadow(0 0 5px var(--ai-color)); }
-        .ai-card:hover { border-color: var(--ai-color); }
-        
-        .pin-card i { color: var(--pinterest); }
-        .pin-card:hover { border-color: var(--pinterest); }
+    border-radius:30px;
+    overflow:hidden;
 
-        .spotify-card i { color: var(--spotify); filter: drop-shadow(0 0 5px var(--spotify)); }
-        .spotify-card:hover { border-color: var(--spotify); }
-        
-        .fake-card i { color: #ffffff; filter: drop-shadow(0 0 5px #ff0000); }
-        .fake-card:hover { border-color: var(--danger); }
+    position:relative;
 
-        .wa-card i { color: var(--whatsapp); }
-        .tele-card i { color: var(--telegram); }
-        .ig-card i { color: var(--instagram); }
-        .grub-card i { color: var(--whatsapp); filter: drop-shadow(0 0 5px var(--whatsapp)); }
-    </style>
+    margin-bottom:25px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 0 30px rgba(139,92,246,.25);
+}
+
+.banner video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        to top,
+        rgba(15,23,42,.95),
+        transparent
+    );
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+
+    padding:20px;
+}
+
+.overlay h2{
+    font-size:24px;
+    margin-bottom:6px;
+}
+
+.overlay p{
+    font-size:13px;
+    color:#d1d5db;
+}
+
+/* SECTION */
+.section-title{
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:2px;
+
+    color:var(--secondary);
+
+    margin-bottom:15px;
+}
+
+/* INFO BOX */
+.info-box{
+    background:rgba(17,24,39,.75);
+
+    backdrop-filter:blur(12px);
+
+    padding:18px;
+
+    border-radius:25px;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    margin-bottom:18px;
+}
+
+.info-box h3{
+    margin-bottom:10px;
+}
+
+.info-box p{
+    color:#cbd5e1;
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+/* CARD */
+.card{
+    position:relative;
+
+    background:rgba(17,24,39,.75);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:25px;
+
+    padding:24px 16px;
+
+    text-decoration:none;
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    gap:12px;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    transition:.3s;
+}
+
+.card::before{
+    content:'';
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    background:rgba(255,255,255,.03);
+
+    border-radius:50%;
+
+    top:-40px;
+    right:-40px;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+
+    border-color:var(--primary);
+
+    box-shadow:
+    0 10px 25px rgba(139,92,246,.18);
+}
+
+.card i{
+    font-size:30px;
+}
+
+.card span{
+    font-size:12px;
+    font-weight:700;
+    text-align:center;
+}
+
+/* FEATURED */
+.featured-card{
+    overflow:hidden;
+}
+
+.badge{
+    position:absolute;
+
+    top:12px;
+    right:12px;
+
+    background:linear-gradient(
+        45deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    padding:4px 8px;
+
+    border-radius:20px;
+
+    font-size:9px;
+    font-weight:700;
+}
+
+/* ICON COLORS */
+.tiktok i{
+    color:#FE2C55;
+}
+
+.fake i{
+    color:#ff4444;
+}
+
+.iqc i{
+    color:#38bdf8;
+}
+
+.pin i{
+    color:#E60023;
+}
+
+.ai i{
+    color:#00e5ff;
+}
+
+.spotify i{
+    color:#1DB954;
+}
+
+/* PROFILE */
+.profile-card{
+    background:rgba(17,24,39,.75);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:30px;
+
+    padding:30px 20px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    margin-bottom:20px;
+}
+
+.profile-card img{
+    width:110px;
+    height:110px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid var(--primary);
+
+    margin-bottom:18px;
+}
+
+.profile-card h2{
+    margin-bottom:8px;
+}
+
+.profile-card p{
+    color:var(--soft);
+    line-height:1.7;
+}
+
+/* CONTACT */
+.contact-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.contact-item{
+    background:rgba(17,24,39,.75);
+
+    border-radius:22px;
+
+    padding:18px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    text-decoration:none;
+    color:white;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    transition:.3s;
+}
+
+.contact-item:hover{
+    transform:translateY(-4px);
+    border-color:var(--primary);
+}
+
+.left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.left i{
+    font-size:24px;
+}
+
+.left h3{
+    font-size:15px;
+    margin-bottom:4px;
+}
+
+.left p{
+    font-size:12px;
+    color:var(--soft);
+}
+
+/* NAVBAR */
+.navbar{
+    position:fixed;
+
+    bottom:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:95%;
+    max-width:500px;
+
+    height:78px;
+
+    background:rgba(17,24,39,.85);
+
+    backdrop-filter:blur(14px);
+
+    border-radius:30px;
+
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    z-index:999;
+}
+
+.nav-btn{
+    background:none;
+    border:none;
+
+    color:#94a3b8;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:5px;
+
+    font-size:11px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.nav-btn i{
+    font-size:20px;
+}
+
+.nav-btn.active{
+    color:var(--primary);
+    transform:translateY(-4px);
+}
+
+</style>
 </head>
 <body>
 
-    <div class="header">
-        <h3>REY<span style="color:var(--secondary)">CLOUDDEV</span></h3>
-        <div class="profile-trigger" onclick="toggleModal()">
-            <img src="https://a.top4top.io/p_3780dq4p22.png" alt="Profile">
-        </div>
-    </div>
+<!-- HOME -->
+<div class="page active" id="home">
 
-    <!-- Modal Profile -->
-    <div class="modal-overlay" id="profileModal" onclick="toggleModal()">
-        <div class="profile-card" onclick="event.stopPropagation()">
-            <div class="close-modal" onclick="toggleModal()"><i class="fa-solid fa-xmark"></i></div>
-            <div class="profile-img-large">
-                <img src="https://a.top4top.io/p_3780dq4p22.png" alt="ReyCloudDev">
-            </div>
-            <span class="badge-dev"><i class="fa-solid fa-code"></i> Developer</span>
-            <h2>ReyCloudDev</h2>
-            <p>Web Developer & Script Developer</p>
-            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-                <i class="fa-brands fa-html5" style="color:#e34c26"></i>
-                <i class="fa-brands fa-node-js" style="color:#68a063"></i>
-                <i class="fa-brands fa-python" style="color:#3776ab"></i>
-            </div>
-        </div>
-    </div>
+<div class="header">
 
-    <!-- Banner -->
-    <div class="neon-border-box">
-        <div class="banner-inner">
-            <video autoplay loop muted playsinline class="banner-video">
-                <source src="https://l.top4top.io/m_37808cmaa6.mp4" type="video/mp4">
-            </video>
-            <div class="banner-overlay">
-                <p style="font-size: 11px; font-weight: 700; color: var(--secondary);"></p>
-                <h2 style="font-size: 22px; font-weight: 800;"></h2>
-            </div>
-        </div>
-    </div>
+<div class="logo">
+<h1>REY<span>CLOUDDEV</span></h1>
+</div>
 
-    <!-- Main Services -->
-    <p class="section-label">Main Services</p>
-    <div class="grid-container">
-        <a href="/vps" class="tool-card"><i class="fa-solid fa-server"></i><span>VPS</span></a>
-        <a href="/panel" class="tool-card"><i class="fa-solid fa-terminal"></i><span>PANEL</span></a>
-        <a href="/script" class="tool-card"><i class="fa-solid fa-code"></i><span>SCRIPT</span></a>
-        <a href="/domain" class="tool-card"><i class="fa-solid fa-globe"></i><span>DOMAIN</span></a>
-        <a href="/osint" class="tool-card"><i class="fa-solid fa-user-secret"></i><span>OSINT</span></a>
-        <a href="/tiktok" class="tool-card"><i class="fa-brands fa-tiktok"></i><span>TIKTOK DL</span></a>
-        <a href="/pintersert" class="tool-card pin-card"><i class="fa-brands fa-pinterest"></i><span>PINTEREST</span></a>
-        
-        <!-- NEW MENU: Spotify -->
-        <a href="/play" class="tool-card spotify-card"><i class="fa-brands fa-spotify"></i><span>SPOTIFY</span></a>
-        
-        <a href="/fakewafat" class="tool-card fake-card"><i class="fa-solid fa-skull-crossbones"></i><span>FAKE WAFAT</span></a>
-        <a href="/iqcphone" class="tool-card"><i class="fa-solid fa-mobile-screen-button"></i><span>IQCPHONE</span></a>
-        <a href="/ai" class="tool-card ai-card"><i class="fa-solid fa-robot"></i><span>CHAT AI</span></a>
-    </div>
+<div class="profile">
+<img src="https://a.top4top.io/p_3780dq4p22.png">
+</div>
 
-    <!-- Social -->
-    <p class="section-label">Support & Community</p>
-    <div class="grid-container" style="margin-bottom: 50px;">
-        <a href="https://wa.me/6281260512743" class="tool-card wa-card"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></a>
-        <a href="https://t.me/ReyCloudDev" class="tool-card tele-card"><i class="fa-brands fa-telegram"></i><span>Telegram</span></a>
-        <a href="https://instagram.com/reycloud_dev" class="tool-card ig-card"><i class="fa-brands fa-instagram"></i><span>Instagram</span></a>
-        <a href="https://chat.whatsapp.com/LEixfHfS7pr9wgryyHpZOt" class="tool-card grub-card">
-            <i class="fa-solid fa-users-viewfinder"></i>
-            <span style="font-size: 10px;">PT Legion Tecknologi </span>
-        </a>
-    </div>
+</div>
 
-    <script>
-        function toggleModal() {
-            const modal = document.getElementById('profileModal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
-    </script>
+<div class="banner">
+
+<video autoplay muted loop playsinline>
+<source src="https://l.top4top.io/m_37808cmaa6.mp4" type="video/mp4">
+</video>
+
+<div class="overlay">
+<h2></h2>
+<p>Downloader • AI • Utility • Services</p>
+</div>
+
+</div>
+
+<div class="section-title">Welcome</div>
+
+<div class="info-box">
+<h3>Modern Dashboard</h3>
+
+<p>
+Website modern untuk kebutuhan downloader,
+AI tools, utility tools, dan layanan digital.
+
+</p>
+</div>
+
+<div class="section-title">Popular Features</div>
+
+<div class="grid">
+
+<a href="/tiktok" class="card tiktok featured-card">
+<div class="badge">HOT</div>
+<i class="fa-brands fa-tiktok"></i>
+<span>TIKTOK DL</span>
+</a>
+
+<a href="/fakewafat" class="card fake featured-card">
+<div class="badge">TREND</div>
+<i class="fa-solid fa-skull-crossbones"></i>
+<span>FAKE WAFAT</span>
+</a>
+
+<a href="/iqcphone" class="card iqc featured-card">
+<div class="badge">NEW</div>
+<i class="fa-solid fa-mobile-screen-button"></i>
+<span>IQCPHONE</span>
+</a>
+
+<a href="/pintersert" class="card pin featured-card">
+<div class="badge">BEST</div>
+<i class="fa-brands fa-pinterest"></i>
+<span>PINTEREST</span>
+</a>
+
+</div>
+
+</div>
+
+<!-- FITUR -->
+<div class="page" id="fitur">
+
+<!-- POPULAR -->
+<div class="section-title">Popular Tools</div>
+
+<div class="grid" style="margin-bottom:25px;">
+
+<a href="/tiktok" class="card tiktok featured-card">
+<div class="badge">HOT</div>
+<i class="fa-brands fa-tiktok"></i>
+<span>TIKTOK DL</span>
+</a>
+
+<a href="/fakewafat" class="card fake featured-card">
+<div class="badge">TREND</div>
+<i class="fa-solid fa-skull-crossbones"></i>
+<span>FAKE WAFAT</span>
+</a>
+
+<a href="/iqcphone" class="card iqc featured-card">
+<div class="badge">NEW</div>
+<i class="fa-solid fa-mobile-screen-button"></i>
+<span>IQCPHONE</span>
+</a>
+
+<a href="/pintersert" class="card pin featured-card">
+<div class="badge">BEST</div>
+<i class="fa-brands fa-pinterest"></i>
+<span>PINTEREST</span>
+</a>
+
+</div>
+
+<!-- SERVICES -->
+<div class="section-title">Services</div>
+
+<div class="grid" style="margin-bottom:25px;">
+
+<a href="/vps" class="card">
+<i class="fa-solid fa-server"></i>
+<span>VPS</span>
+</a>
+
+<a href="/panel" class="card">
+<i class="fa-solid fa-terminal"></i>
+<span>PANEL</span>
+</a>
+
+<a href="/script" class="card">
+<i class="fa-solid fa-code"></i>
+<span>SCRIPT</span>
+</a>
+
+<a href="/domain" class="card">
+<i class="fa-solid fa-globe"></i>
+<span>DOMAIN</span>
+</a>
+
+</div>
+
+<!-- AI & TOOLS -->
+<div class="section-title">AI & Utility</div>
+
+<div class="grid">
+
+<a href="/ai" class="card ai">
+<i class="fa-solid fa-robot"></i>
+<span>CHAT AI</span>
+</a>
+
+<a href="/tourl" class="card">
+<i class="fa-solid fa-image"></i>
+<span>TO URL</span>
+</a>
+
+<a href="/removebg" class="card">
+<i class="fa-solid fa-scissors"></i>
+<span>REMOVE BG</span>
+</a>
+
+<a href="/remini" class="card">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+<span>ENHANCE</span>
+</a>
+
+<a href="/ytmp3" class="card">
+<i class="fa-brands fa-youtube"></i>
+<span>YT MP3</span>
+</a>
+
+<a href="/ytmp4" class="card">
+<i class="fa-brands fa-youtube"></i>
+<span>YT MP4</span>
+</a>
+
+<a href="/qc" class="card">
+<i class="fa-solid fa-comment"></i>
+<span>QUOTE CHAT</span>
+</a>
+
+<a href="/ssweb" class="card">
+<i class="fa-solid fa-camera"></i>
+<span>SS WEB</span>
+</a>
+
+</div>
+
+</div>
+
+<!-- INFO -->
+<div class="page" id="info">
+
+<div class="section-title">Information</div>
+
+<div class="info-box">
+<h3>About Website</h3>
+
+<p>
+ReyCloudDev adalah dashboard modern
+yang menyediakan berbagai tools digital,
+AI tools, downloader, utility tools,
+dan layanan developer dalam satu website.
+</p>
+</div>
+
+<div class="info-box">
+<h3>Website Features</h3>
+
+<p>
+• TikTok Downloader <br>
+• Fake Wafat Generator <br>
+• IQCPHONE Tools <br>
+• Pinterest Search <br>
+• AI Assistant <br>
+• Remove Background <br>
+• Screenshot Website <br>
+• YouTube MP3 & MP4
+</p>
+</div>
+
+<div class="info-box">
+<h3>System Status</h3>
+
+<p style="color:#22c55e;">
+● All systems operational
+</p>
+
+<p style="margin-top:8px;">
+Version 7.0 Stable Release
+</p>
+</div>
+
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="contact">
+
+<div class="section-title">Developer</div>
+
+<div class="profile-card">
+
+<img src="https://a.top4top.io/p_3780dq4p22.png">
+
+<h2>ReyCloudDev</h2>
+
+<p>
+Web Developer • Script Developer • UI Designer
+</p>
+
+</div>
+
+<div class="section-title">Social Media</div>
+
+<div class="contact-list">
+
+<a href="https://wa.me/6281260512743" class="contact-item">
+
+<div class="left">
+<i class="fa-brands fa-whatsapp" style="color:#25D366;"></i>
+
+<div>
+<h3>WhatsApp</h3>
+<p>Fast Response</p>
+</div>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</a>
+
+<a href="https://t.me/ReyCloudDev" class="contact-item">
+
+<div class="left">
+<i class="fa-brands fa-telegram" style="color:#0088cc;"></i>
+
+<div>
+<h3>Telegram</h3>
+<p>Official Account</p>
+</div>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</a>
+
+<a href="https://instagram.com/reycloud_dev" class="contact-item">
+
+<div class="left">
+<i class="fa-brands fa-instagram" style="color:#E1306C;"></i>
+
+<div>
+<h3>Instagram</h3>
+<p>@reycloud_dev</p>
+</div>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</a>
+
+</div>
+
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+<button class="nav-btn active" onclick="showPage('home', this)">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('fitur', this)">
+<i class="fa-solid fa-layer-group"></i>
+<span>Fitur</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('info', this)">
+<i class="fa-solid fa-circle-info"></i>
+<span>Info</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('contact', this)">
+<i class="fa-solid fa-envelope"></i>
+<span>Contact</span>
+</button>
+
+</div>
+
+<script>
+
+function showPage(pageId, btn){
+
+document.querySelectorAll('.page').forEach(page=>{
+page.classList.remove('active');
+});
+
+document.getElementById(pageId).classList.add('active');
+
+document.querySelectorAll('.nav-btn').forEach(nav=>{
+nav.classList.remove('active');
+});
+
+btn.classList.add('active');
+
+}
+
+</script>
+
 </body>
 </html>
-  
