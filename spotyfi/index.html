@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sporty Music - ReyCloudDev</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+:root{
+    --bg:#070707;
+    --card:#121212;
+    --spotify:#1DB954;
+    --soft:#b3b3b3;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:linear-gradient(to bottom,#101010,#050505);
+    color:white;
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:900;
+}
+
+.logo span{
+    color:var(--spotify);
+}
+
+.back{
+    text-decoration:none;
+    color:white;
+    background:#1f1f1f;
+    padding:12px 18px;
+    border-radius:18px;
+    transition:.3s;
+}
+
+.back:hover{
+    background:var(--spotify);
+    color:black;
+}
+
+.hero{
+    background:linear-gradient(135deg,#1DB954,#191414);
+    border-radius:35px;
+    padding:45px;
+    margin-bottom:35px;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:'';
+
+    position:absolute;
+
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    top:-120px;
+    right:-120px;
+}
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#e5e7eb;
+    max-width:650px;
+    line-height:1.7;
+}
+
+.search-box{
+    margin-top:25px;
+    display:flex;
+    gap:15px;
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    padding:17px 20px;
+    border-radius:18px;
+    font-size:15px;
+}
+
+.search-box button{
+    border:none;
+    padding:17px 25px;
+    border-radius:18px;
+    background:black;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.search-box button:hover{
+    transform:scale(1.05);
+}
+
+.loading{
+    display:none;
+    text-align:center;
+    color:#d1d5db;
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:22px;
+}
+
+.card{
+    background:var(--card);
+    border-radius:28px;
+    overflow:hidden;
+    transition:.3s;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.card:hover{
+    transform:translateY(-7px);
+    background:#181818;
+}
+
+.thumb{
+    position:relative;
+}
+
+.thumb img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+    display:block;
+}
+
+.play{
+    position:absolute;
+    bottom:15px;
+    right:15px;
+
+    width:58px;
+    height:58px;
+
+    border-radius:50%;
+
+    background:var(--spotify);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:black;
+
+    font-size:22px;
+
+    box-shadow:0 10px 25px rgba(29,185,84,.35);
+}
+
+.content{
+    padding:20px;
+}
+
+.content h3{
+    font-size:17px;
+    margin-bottom:12px;
+    line-height:1.6;
+}
+
+.meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.tag{
+    background:#202020;
+    color:#d1d5db;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+}
+
+audio{
+    width:100%;
+    margin-bottom:15px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    flex:1;
+    border:none;
+    padding:14px;
+    border-radius:15px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.3s;
+}
+
+.download{
+    background:var(--spotify);
+    color:black;
+}
+
+.youtube{
+    background:#202020;
+    color:white;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+.shimmer{
+    height:320px;
+    background:#1a1a1a;
+    position:relative;
+    overflow:hidden;
+}
+
+.shimmer::before{
+    content:'';
+
+    position:absolute;
+
+    top:0;
+    left:-150%;
+
+    width:80%;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.08),
+        transparent
+    );
+
+    animation:shine 1.2s infinite;
+}
+
+@keyframes shine{
+    100%{
+        left:200%;
+    }
+}
+
+.empty{
+    text-align:center;
+    color:#9ca3af;
+    padding:70px 20px;
+    background:#111;
+    border-radius:28px;
+}
+
+.footer{
+    text-align:center;
+    color:#6b7280;
+    margin-top:50px;
+    padding-bottom:30px;
+}
+
+@media(max-width:768px){
+
+    .hero{
+        padding:30px;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="topbar">
+
+<div class="logo">
+SPOT<span>IFY</span>
+</div>
+
+<a href="/dashboard" class="back">
+← Dashboard
+</a>
+
+</div>
+
+<div class="hero">
+
+<h1>Spotify Search</h1>
+
+<p>
+Search lagu fav kamu secara gratis tanpa iklan.
+</p>
+
+<div class="search-box">
+
+<input 
+type="text"
+id="query"
+placeholder="Cari lagu favorit..."
+>
+
+<button onclick="searchMusic()">
+<i class="fa-solid fa-magnifying-glass"></i>
+ Search
+</button>
+
+</div>
+
+</div>
+
+<div class="loading" id="loading">
+Lagi nyari lagu bang...
+</div>
+
+<div class="grid" id="result">
+
+<div class="empty">
+<i class="fa-solid fa-music" style="font-size:45px;margin-bottom:15px;"></i>
+
+<h2 style="margin-bottom:10px;">
+Belum Ada Lagu
+</h2>
+
+<p>
+Mulai Cari Lagu Viral,Trending Gratis Tanpa Iklan.
+</p>
+</div>
+
+</div>
+
+<div class="footer">
+Powered By ReyCloudDev
+</div>
+
+</div>
+
+<script>
+
+async function searchMusic(){
+
+    const query = document.getElementById("query").value.trim();
+
+    const result = document.getElementById("result");
+
+    const loading = document.getElementById("loading");
+
+    if(!query){
+        alert("Isi judul lagu dulu njir.");
+        return;
+    }
+
+    result.innerHTML = "";
+
+    loading.style.display = "block";
+
+    for(let i=1;i<=10;i++){
+
+        const shimmer = document.createElement("div");
+
+        shimmer.className = "card";
+
+        shimmer.innerHTML = `
+        <div class="shimmer"></div>
+        `;
+
+        result.appendChild(shimmer);
+
+    }
+
+    try{
+
+        let cards = "";
+
+        for(let i=1;i<=10;i++){
+
+            const res = await fetch(
+            `https://api.ikyyxd.my.id/search/ytplay?q=${encodeURIComponent(query)}`
+            );
+
+            const data = await res.json();
+
+            const music = data.result;
+
+            cards += `
+            
+            <div class="card">
+
+                <div class="thumb">
+
+                    <img src="${music.thumbnail}">
+
+                    <div class="play">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                </div>
+
+                <div class="content">
+
+                    <h3>${music.title}</h3>
+
+                    <div class="meta">
+
+                        <div class="tag">
+                            ${Math.floor(music.duration / 60)} Menit
+                        </div>
+
+                        <div class="tag">
+                            ${music.audio.quality}
+                        </div>
+
+                    </div>
+
+                    <audio controls src="${music.audio.url}"></audio>
+
+                    <div class="actions">
+
+                        <button 
+                        class="btn download"
+                        onclick="downloadMusic('${music.audio.url}')">
+                            Download
+                        </button>
+
+                        <button 
+                        class="btn youtube"
+                        onclick="window.open('${music.source}')">
+                            YouTube
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            
+            `;
+        }
+
+        result.innerHTML = cards;
+
+    }catch(err){
+
+        result.innerHTML = `
+        
+        <div class="empty">
+            <i class="fa-solid fa-face-sad-tear" style="font-size:45px;margin-bottom:15px;"></i>
+
+            <h2 style="margin-bottom:10px;">
+            Lagu Gagal Dimuat
+            </h2>
+
+            <p>
+            Server lagi ngambek atau endpoint tidur 🗿
+            </p>
+        </div>
+        
+        `;
+    }
+
+    loading.style.display = "none";
+
+}
+
+function downloadMusic(url){
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "music.webm";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+}
+
+</script>
+
+</body>
+</html>
