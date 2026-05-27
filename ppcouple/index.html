@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PP Couple Generator - ReyCloudDev</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+:root{
+    --bg:#0f172a;
+    --card:#111827;
+    --primary:#8b5cf6;
+    --secondary:#ec4899;
+    --text:#f8fafc;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:
+    radial-gradient(circle at top right,#312e81 0%,transparent 25%),
+    radial-gradient(circle at bottom left,#831843 0%,transparent 25%),
+    var(--bg);
+
+    color:var(--text);
+
+    min-height:100vh;
+
+    padding:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:800;
+}
+
+.logo span{
+    color:var(--secondary);
+}
+
+.back{
+    text-decoration:none;
+    color:white;
+
+    background:rgba(255,255,255,.08);
+
+    padding:12px 18px;
+
+    border-radius:18px;
+
+    transition:.3s;
+}
+
+.back:hover{
+    background:var(--primary);
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.hero h1{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.generator-box{
+    max-width:550px;
+    margin:auto;
+
+    background:rgba(17,24,39,.75);
+
+    border:1px solid rgba(255,255,255,.05);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    backdrop-filter:blur(14px);
+
+    margin-bottom:40px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+
+    margin-bottom:25px;
+}
+
+.stat{
+    background:#1e293b;
+    border-radius:18px;
+    padding:16px;
+    text-align:center;
+}
+
+.stat h2{
+    color:var(--secondary);
+    margin-bottom:5px;
+}
+
+.stat p{
+    color:#94a3b8;
+    font-size:12px;
+}
+
+.generate-btn{
+    width:100%;
+    border:none;
+
+    padding:17px;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+        45deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color:white;
+
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.generate-btn:hover{
+    transform:translateY(-5px);
+}
+
+.loading{
+    display:none;
+    text-align:center;
+    margin-top:20px;
+    color:#cbd5e1;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:22px;
+}
+
+.card{
+    background:rgba(17,24,39,.75);
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    backdrop-filter:blur(12px);
+
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.images{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+
+.images img{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+}
+
+.shimmer{
+    width:100%;
+    height:260px;
+    background:#1e293b;
+    position:relative;
+    overflow:hidden;
+}
+
+.shimmer::before{
+    content:'';
+
+    position:absolute;
+    top:0;
+    left:-150%;
+
+    width:80%;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.15),
+        transparent
+    );
+
+    animation:shine 1.2s infinite;
+}
+
+@keyframes shine{
+    100%{
+        left:200%;
+    }
+}
+
+.card-body{
+    padding:18px;
+}
+
+.card-body h3{
+    margin-bottom:8px;
+}
+
+.card-body p{
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    flex:1;
+    border:none;
+    padding:13px;
+    border-radius:15px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.male{
+    background:#3b82f6;
+}
+
+.female{
+    background:#ec4899;
+}
+
+.footer{
+    text-align:center;
+    color:#64748b;
+    margin-top:45px;
+    font-size:13px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="topbar">
+
+<div class="logo">
+REY<span>CLOUDDEV</span>
+</div>
+
+<a href="/dashboard" class="back">
+← Dashboard
+</a>
+
+</div>
+
+<div class="hero">
+
+<h1>PP Couple Generator</h1>
+
+<p>
+Generate 30 PP couple sekaligus. Biar galeri lu penuh pasangan anime padahal jomblo kronis.
+</p>
+
+</div>
+
+<div class="generator-box">
+
+<div class="stats">
+
+<div class="stat">
+<h2>30x</h2>
+<p>Output</p>
+</div>
+
+<div class="stat">
+<h2>HD</h2>
+<p>Image</p>
+</div>
+
+<div class="stat">
+<h2>FAST</h2>
+<p>Loading</p>
+</div>
+
+</div>
+
+<button class="generate-btn" onclick="generatePP()">
+<i class="fa-solid fa-heart"></i>
+ Generate 30 PP Couple
+</button>
+
+<div class="loading" id="loading">
+Sedang nyulik anime couple dari server...
+</div>
+
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<div class="footer">
+Powered By ReyCloudDev
+</div>
+
+</div>
+
+<script>
+
+async function generatePP(){
+
+    const gallery = document.getElementById("gallery");
+    const loading = document.getElementById("loading");
+
+    gallery.innerHTML = "";
+
+    loading.style.display = "block";
+
+    for(let i=1;i<=30;i++){
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+        
+        <div class="images">
+
+            <div class="shimmer" id="male-shimmer-${i}"></div>
+
+            <div class="shimmer" id="female-shimmer-${i}"></div>
+
+            <img id="male-${i}" style="display:none;">
+            <img id="female-${i}" style="display:none;">
+
+        </div>
+
+        <div class="card-body">
+
+            <h3>PP Couple ${i}</h3>
+
+            <p>
+            Paket couple anime siap pakai buat profil WA, Telegram, TikTok, atau buat halu berjamaah.
+            </p>
+
+            <div class="actions">
+
+                <button class="btn male" onclick="downloadImage('male-${i}')">
+                    Cowo
+                </button>
+
+                <button class="btn female" onclick="downloadImage('female-${i}')">
+                    Cewe
+                </button>
+
+            </div>
+
+        </div>
+        
+        `;
+
+        gallery.appendChild(card);
+
+        try{
+
+            const res = await fetch("https://api.ikyyxd.my.id/random/ppcouple?apikey=kyzz");
+
+            const data = await res.json();
+
+            const male = data.result.cowo;
+            const female = data.result.cewe;
+
+            const maleImg = document.getElementById(`male-${i}`);
+            const femaleImg = document.getElementById(`female-${i}`);
+
+            maleImg.src = male;
+            femaleImg.src = female;
+
+            maleImg.onload = () => {
+
+                document.getElementById(`male-shimmer-${i}`).remove();
+
+                maleImg.style.display = "block";
+
+                maleImg.setAttribute("data-url", male);
+
+            }
+
+            femaleImg.onload = () => {
+
+                document.getElementById(`female-shimmer-${i}`).remove();
+
+                femaleImg.style.display = "block";
+
+                femaleImg.setAttribute("data-url", female);
+
+            }
+
+        }catch(err){
+
+            document.getElementById(`male-shimmer-${i}`).innerHTML = `
+            
+            <div style="
+                height:100%;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                color:#94a3b8;
+                font-size:13px;
+            ">
+                Error 🗿
+            </div>
+            
+            `;
+
+        }
+
+    }
+
+    loading.style.display = "none";
+
+}
+
+function downloadImage(id){
+
+    const img = document.getElementById(id);
+
+    const url = img.getAttribute("data-url");
+
+    if(!url){
+        alert("Gambar belum siap bambang.");
+        return;
+    }
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "pp-couple.jpg";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+}
+
+</script>
+
+</body>
+</html>
