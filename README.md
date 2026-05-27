@@ -63,11 +63,3 @@ Star repo ⭐
 Share ke teman
 Improve bareng
 
----
-
-Kalau mau next level lagi, gue bisa bikinin:
-- [README versi super aesthetic (with badges + gif + screenshot frame)](reference-followup:1613)
-- [landing page GitHub yang langsung kayak produk SaaS](reference-followup:1683)
-- atau [auto deploy Vercel template](reference-followup:1742)
-
-Tinggal bilang, jangan stuck di basic terus.3
