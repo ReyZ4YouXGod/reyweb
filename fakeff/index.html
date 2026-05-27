@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fake Lobby FF - ReyCloudDev</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#0d0d0d;
+    color:white;
+    overflow-x:hidden;
+    min-height:100vh;
+}
+
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,#ff990020,transparent 30%),
+    radial-gradient(circle at bottom right,#ff550020,transparent 30%),
+    #0d0d0d;
+    z-index:-1;
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:20px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color:#ff9800;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:white;
+    background:#1a1a1a;
+    padding:12px 18px;
+    border-radius:14px;
+    transition:.3s;
+}
+
+.back-btn:hover{
+    background:#ff9800;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.hero h1{
+    font-size:45px;
+    color:#ff9800;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#999;
+    font-size:15px;
+}
+
+.dashboard-card{
+    max-width:550px;
+    margin:auto;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:28px;
+    padding:30px;
+    backdrop-filter:blur(15px);
+    box-shadow:0 0 40px rgba(255,140,0,0.12);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.stat-box{
+    background:#161616;
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+}
+
+.stat-box h2{
+    color:#ff9800;
+    font-size:24px;
+}
+
+.stat-box p{
+    color:#888;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:10px;
+    color:#ddd;
+}
+
+.input-group input{
+    width:100%;
+    padding:16px;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    background:#1a1a1a;
+    color:white;
+    font-size:15px;
+}
+
+.generate-btn{
+    width:100%;
+    border:none;
+    padding:16px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#ff9800,#ff5500);
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.generate-btn:hover{
+    transform:scale(1.02);
+}
+
+.loading{
+    display:none;
+    margin-top:20px;
+    text-align:center;
+    color:#ff9800;
+    font-weight:600;
+}
+
+.gallery{
+    margin-top:45px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:22px;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:22px;
+    overflow:hidden;
+    backdrop-filter:blur(10px);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card img{
+    width:100%;
+    display:block;
+}
+
+.download-btn{
+    display:block;
+    text-align:center;
+    padding:15px;
+    text-decoration:none;
+    color:white;
+    background:#181818;
+    transition:.3s;
+}
+
+.download-btn:hover{
+    background:#ff9800;
+}
+
+.shimmer{
+    position:relative;
+    overflow:hidden;
+    background:#1a1a1a;
+    min-height:340px;
+}
+
+.shimmer::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-150%;
+    width:80%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.15),
+        transparent
+    );
+    animation:shimmer 1.2s infinite;
+}
+
+@keyframes shimmer{
+    100%{
+        left:200%;
+    }
+}
+
+.footer{
+    text-align:center;
+    color:#666;
+    margin-top:50px;
+    padding-bottom:20px;
+    font-size:13px;
+}
+
+@media(max-width:768px){
+
+    .hero h1{
+        font-size:34px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="container">
+
+    <div class="topbar">
+        <div class="logo">ReyCloudDev</div>
+
+        <a href="/dashboard" class="back-btn">
+            ← Dashboard
+        </a>
+    </div>
+
+    <div class="hero">
+        <h1>Fake Lobby FF</h1>
+        <p>Bikin lobby FF palsu 4 gambar sekaligus. Modal nickname doang.</p>
+    </div>
+
+    <div class="dashboard-card">
+
+        <div class="stats">
+
+            <div class="stat-box">
+                <h2>4x</h2>
+                <p>Output Image</p>
+            </div>
+
+            <div class="stat-box">
+                <h2>HD</h2>
+                <p>Quality</p>
+            </div>
+
+            <div class="stat-box">
+                <h2>FAST</h2>
+                <p>Generate</p>
+            </div>
+
+        </div>
+
+        <div class="input-group">
+            <label>Nickname Free Fire</label>
+
+            <input 
+                type="text" 
+                id="nickname" 
+                placeholder="Contoh: ReyCloudDev"
+            >
+        </div>
+
+        <button class="generate-btn" onclick="generateLobby()">
+            Generate Fake Lobby
+        </button>
+
+        <div class="loading" id="loading">
+            Lagi masak lobby palsu...
+        </div>
+
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="footer">
+        Powered By ReyCloudDev
+    </div>
+
+</div>
+
+<script>
+
+async function generateLobby(){
+
+    const nickname = document.getElementById("nickname").value.trim();
+    const gallery = document.getElementById("gallery");
+    const loading = document.getElementById("loading");
+
+    if(!nickname){
+        alert("Nickname jangan kosong bang. Server bukan dukun.");
+        return;
+    }
+
+    gallery.innerHTML = "";
+    loading.style.display = "block";
+
+    for(let i = 1; i <= 4; i++){
+
+        const api = `https://api.nexray.eu.cc/maker/fakelobyff?nickname=${encodeURIComponent(nickname)}&v=${i}&t=${Date.now()+i}`;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+        
+            <div class="shimmer" id="shimmer-${i}"></div>
+
+            <img 
+                src="${api}" 
+                id="img-${i}"
+                style="display:none;"
+            >
+
+            <a 
+                href="${api}"
+                download="fake-lobby-${i}.jpg"
+                class="download-btn"
+                id="btn-${i}"
+                style="display:none;"
+            >
+                Save Image ${i}
+            </a>
+
+        `;
+
+        gallery.appendChild(card);
+
+        const img = document.getElementById(`img-${i}`);
+        const shimmer = document.getElementById(`shimmer-${i}`);
+        const btn = document.getElementById(`btn-${i}`);
+
+        img.onload = () => {
+
+            shimmer.remove();
+
+            img.style.display = "block";
+            btn.style.display = "block";
+
+        }
+
+        img.onerror = () => {
+
+            shimmer.innerHTML = `
+                <div style="
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    height:340px;
+                    color:#888;
+                    font-size:14px;
+                ">
+                    Gagal load gambar 🗿
+                </div>
+            `;
+
+        }
+
+    }
+
+    setTimeout(() => {
+        loading.style.display = "none";
+    },1000);
+
+}
+
+</script>
+
+</body>
+</html>
