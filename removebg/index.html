@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RemoveBG Pro</title>
+
+<style>
+body{
+    margin:0;
+    font-family:system-ui, Arial;
+    background: radial-gradient(circle at top,#111827,#020617);
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* BACK BUTTON */
+.back{
+    position:fixed;
+    top:16px;
+    left:16px;
+    padding:8px 12px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:10px;
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+}
+
+/* CARD */
+.card{
+    width:92%;
+    max-width:520px;
+    background:rgba(17,24,39,0.7);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    text-align:center;
+}
+
+/* TITLE */
+h1{
+    font-size:20px;
+    margin-bottom:4px;
+}
+
+p{
+    font-size:12px;
+    opacity:0.6;
+    margin-bottom:15px;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    outline:none;
+    background:#0b1220;
+    color:white;
+    margin-bottom:10px;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    transform:scale(1.02);
+}
+
+/* LOADING */
+.loading{
+    margin-top:10px;
+    font-size:12px;
+    color:#fbbf24;
+    display:none;
+}
+
+/* RESULT */
+.result{
+    margin-top:16px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:12px;
+    border-radius:14px;
+    display:none;
+}
+
+.result img{
+    width:100%;
+    border-radius:12px;
+}
+
+/* SAVE BUTTON */
+.save{
+    margin-top:10px;
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+}
+
+/* FOOTER */
+.footer{
+    margin-top:14px;
+    font-size:11px;
+    opacity:0.5;
+}
+</style>
+</head>
+
+<body>
+
+<a class="back" href="/dashboard">← Dashboard</a>
+
+<div class="card">
+    <h1>Remove Background</h1>
+    <p>AI Image Processing Tool</p>
+
+    <input type="text" id="url" placeholder="Masukkan URL gambar...">
+    <button onclick="process()">Generate</button>
+
+    <div class="loading" id="loading">Processing gambar...</div>
+
+    <div class="result" id="resultBox">
+        <img id="imgResult">
+        <button class="save" onclick="download()">Save Foto</button>
+    </div>
+
+    <div class="footer">
+        Powered By <b>ReyCloudDev</b>
+    </div>
+</div>
+
+<script>
+let blobUrl = "";
+
+async function process(){
+    const url = document.getElementById("url").value;
+    const loading = document.getElementById("loading");
+    const resultBox = document.getElementById("resultBox");
+    const img = document.getElementById("imgResult");
+
+    if(!url){
+        alert("Isi URL dulu");
+        return;
+    }
+
+    loading.style.display = "block";
+
+    try{
+        const res = await fetch(
+            "https://api.nexray.eu.cc/tools/removebg?url=" + encodeURIComponent(url)
+        );
+
+        if(!res.ok){
+            throw new Error("API error");
+        }
+
+        const blob = await res.blob();
+        blobUrl = URL.createObjectURL(blob);
+
+        img.src = blobUrl;
+        resultBox.style.display = "block";
+
+    }catch(e){
+        alert("Gagal proses gambar: " + e.message);
+    }
+
+    loading.style.display = "none";
+}
+
+function download(){
+    if(!blobUrl) return;
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = "ReyCloudDev-removebg.png";
+    a.click();
+}
+</script>
+
+</body>
+</html>
