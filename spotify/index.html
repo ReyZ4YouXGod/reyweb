@@ -425,7 +425,7 @@ async function searchMusic(){
         for(let i=1;i<=10;i++){
 
             const res = await fetch(
-            `https://api.ikyyxd.my.id/search/ytplay?q=${encodeURIComponent(query)}`
+            `https://api.ikyyxd.my.id/search/spotify?query=${encodeURIComponent(query)}`
             );
 
             const data = await res.json();
