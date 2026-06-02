@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReyCloud Store - Premium Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+        // Config Firebase Resmi ReyCloudProjeck
+        const firebaseConfig = {
+            apiKey: "AIzaSyBalDEWl225t25o4pohgig0TiFZU1Q4pGE",
+            authDomain: "reycloudprojeck.firebaseapp.com",
+            projectId: "reycloudprojeck",
+            storageBucket: "reycloudprojeck.firebasestorage.app",
+            messagingSenderId: "165263424038",
+            appId: "1:165263424038:web:2549acb898dbbe965ac4e7",
+            measurementId: "G-V9HFQDJ4GB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // Email khusus pengelola utama
+        const ADMIN_EMAIL = "reycloudev@gmail.com";
+
+        // Fungsi Login Google Pop-up
+        window.loginGoogle = async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                if (user.email === ADMIN_EMAIL) {
+                    alert(`Selamat datang Developer, ${user.displayName}!`);
+                    window.switchPage('admin');
+                } else {
+                    alert(`Akses Ditolak! Akun ${user.email} bukan pemilik ReyCloud.`);
+                    await signOut(auth); 
+                    window.switchPage('shop');
+                }
+            } catch (error) {
+                console.error("Login Gagal:", error);
+                alert("Gagal melakukan login Google. Pastikan domain sudah di-whitelist di Firebase!");
+            }
+        };
+
+        // Fungsi Logout
+        window.logoutAdmin = () => {
+            signOut(auth).then(() => {
+                alert("Berhasil logout.");
+                window.switchPage('shop');
+            });
+        };
+
+        // Deteksi State Login secara Realtime
+        onAuthStateChanged(auth, (user) => {
+            const adminStatus = document.getElementById('adminStatus');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const navAdminBtn = document.getElementById('navAdminBtn');
+
+            if (user && user.email === ADMIN_EMAIL) {
+                window.isAdminLoggedIn = true;
+                adminStatus.innerHTML = `<img src="${user.photoURL}" class="w-5 h-5 rounded-full inline mr-1"> Admin Active`;
+                adminStatus.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                navAdminBtn.setAttribute('onclick', "window.switchPage('admin')");
+                navAdminBtn.innerHTML = `<i class="fa-solid fa-gauge mr-1"></i> Dashboard Admin`;
+            } else {
+                window.isAdminLoggedIn = false;
+                adminStatus.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+                navAdminBtn.setAttribute('onclick', "window.loginGoogle()");
+                navAdminBtn.innerHTML = `<i class="fa-brands fa-google mr-1"></i> Login Admin`;
+                if(!document.getElementById('adminPage').classList.contains('hidden')) {
+                    window.switchPage('shop');
+                }
+            }
+            window.renderData();
+        });
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <nav class="border-b border-gray-800 bg-gray-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchPage('shop')">
+                <span class="text-xl font-bold tracking-wider text-white">REY<span class="text-blue-500">CLOUD</span></span>
+            </div>
+            <div class="flex items-center">
+                <span id="adminStatus" class="hidden text-xs bg-green-500/10 text-green-400 px-3 py-1.5 rounded-lg mr-2 border border-green-500/20 flex items-center gap-1"></span>
+                
+                <button id="navAdminBtn" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition"></button>
+                
+                <button id="navShopBtn" onclick="switchPage('shop')" class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition ml-2">
+                    <i class="fa-solid fa-shop mr-1"></i> Lihat Toko
+                </button>
+                
+                <button id="logoutBtn" onclick="window.logoutAdmin()" class="hidden bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition ml-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="shopPage" class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-white mb-2">Pilihan Paket Panel & Hosting</h1>
+            <p class="text-gray-400">Pilih kapasitas produk yang sesuai dengan kebutuhan performamu.</p>
+        </div>
+        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </div>
+
+    <div id="adminPage" class="hidden max-w-4xl mx-auto px-4 py-12 w-full flex-grow">
+        <div class="bg-gray-800/50 border border-gray-700 rounded-2xl p-6 sm:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-blue-500"></i> Tambah Produk Baru
+                </h2>
+                <span class="bg-blue-500/10 text-blue-400 text-xs px-3 py-1 rounded-full font-semibold">Authorized Admin Only</span>
+            </div>
+
+            <form id="productForm" onsubmit="addProduct(event)" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Nama Produk / Panel</label>
+                    <input type="text" id="pName" placeholder="Contoh: Panel 4 GB" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Harga (Rp)</label>
+                        <input type="text" id="pPrice" placeholder="Contoh: 20.000" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Deskripsi Singkat</label>
+                        <input type="text" id="pDesc" placeholder="Contoh: Cocok untuk running bot wa" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Detail Fitur 1</label>
+                        <input type="text" id="pCpu" placeholder="Contoh: 250% CPU" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Detail Fitur 2</label>
+                        <input type="text" id="pDisk" placeholder="Contoh: 20GB Storage NVMe" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Tujuan Chat Order (WhatsApp atau Telegram)</label>
+                    <input type="text" id="pContact" placeholder="Contoh WA: 6281260512743 atau Username Tele: ReyCloudDev" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+                    <p class="text-xs text-gray-500 mt-1">*Jika WA gunakan format angka langsung (tanpa + atau spasi). Jika Telegram isi dengan usernamenya saja.</p>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-save mr-1"></i> Simpan & Publikasikan
+                </button>
+            </form>
+
+            <div class="mt-12">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-gray-400"></i> Kelola Produk Saat Ini
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-400 border border-gray-700 rounded-xl overflow-hidden">
+                        <thead class="bg-gray-900 text-gray-300 uppercase text-xs tracking-wider">
+                            <tr>
+                                <th class="px-4 py-3">Nama</th>
+                                <th class="px-4 py-3">Harga</th>
+                                <th class="px-4 py-3">Tujuan Order</th>
+                                <th class="px-4 py-3 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody" class="divide-y divide-gray-700"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-6 text-center text-gray-500 text-sm border-t border-gray-800 bg-gray-950">
+        <p>&copy; 2026 REYCLOUD. All rights reserved.</p>
+    </footer>
+
+    <script>
+        window.isAdminLoggedIn = false;
+
+        const defaultProducts = [
+            {id: 1, name: "Panel 1 GB", price: "5.000", desc: "Cocok untuk bot ringan", cpu: "100% CPU", disk: "5GB Disk", contact: "6281260512743"},
+            {id: 2, name: "Panel 2 GB", price: "10.000", desc: "Paling populer untuk bot WA", cpu: "150% CPU", disk: "10GB Disk", contact: "6281260512743"},
+            {id: 3, name: "Panel Unlimited", price: "50.000", desc: "Tanpa batasan limit performa", cpu: "Unshared CPU", disk: "Unlimited Disk", contact: "ReyCloudDev"}
+        ];
+
+        let products = JSON.parse(localStorage.getItem('reycloud_products')) || defaultProducts;
+
+        window.switchPage = function(page) {
+            const shopPage = document.getElementById('shopPage');
+            const adminPage = document.getElementById('adminPage');
+            const navAdminBtn = document.getElementById('navAdminBtn');
+            const navShopBtn = document.getElementById('navShopBtn');
+
+            if(page === 'admin' && window.isAdminLoggedIn) {
+                shopPage.classList.add('hidden');
+                adminPage.classList.remove('hidden');
+                navAdminBtn.classList.add('hidden');
+                navShopBtn.classList.remove('hidden');
+            } else {
+                shopPage.classList.remove('hidden');
+                adminPage.classList.add('hidden');
+                navShopBtn.classList.add('hidden');
+                if(window.isAdminLoggedIn) navAdminBtn.classList.remove('hidden');
+            }
+            window.renderData();
+        }
+
+        // Fungsi membuat URL WhatsApp / Telegram beserta teks otomatis
+        window.generateOrderLink = function(pkg) {
+            const baseText = `Halo ReyCloud, saya mau beli produk ini:\n\n` +
+                             `▪️ *Nama Barang* : ${pkg.name}\n` +
+                             `▪️ *Harga* : Rp ${pkg.price}/bln\n` +
+                             `▪️ *Deskripsi* : ${pkg.desc}\n\n` +
+                             `Mohon segera diproses ya!`;
+            
+            const encodedText = encodeURIComponent(baseText);
+
+            // Cek apakah input contact berupa angka (WhatsApp) atau teks biasa (Telegram username)
+            if (/^\d+$/.test(pkg.contact.trim())) {
+                return `https://wa.me/${pkg.contact.trim()}?text=${encodedText}`;
+            } else {
+                // Untuk telegram, teks dikirim manual oleh user setelah masuk room atau memakai deep link t.me
+                return `https://t.me/${pkg.contact.trim().replace('@', '')}`;
+            }
+        }
+
+        window.renderData = function() {
+            const grid = document.getElementById('productGrid');
+            const tableBody = document.getElementById('adminTableBody');
+            if(!grid || !tableBody) return;
+            
+            grid.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            products.forEach(pkg => {
+                const orderLink = window.generateOrderLink(pkg);
+                
+                grid.innerHTML += `
+                    <div class="bg-gray-800/50 border border-gray-700 rounded-2xl p-6 flex flex-col justify-between hover:border-blue-500 transition duration-300">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-1">${pkg.name}</h3>
+                            <p class="text-xs text-gray-400 mb-4">${pkg.desc}</p>
+                            <div class="mb-6"><span class="text-3xl font-extrabold text-white">Rp ${pkg.price}</span><span class="text-gray-400 text-sm">/bln</span></div>
+                            <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                                <li><i class="fa-solid fa-microchip text-blue-500 mr-2"></i> ${pkg.cpu}</li>
+                                <li><i class="fa-solid fa-database text-blue-500 mr-2"></i> ${pkg.disk}</li>
+                            </ul>
+                        </div>
+                        <a href="${orderLink}" target="_blank" class="block text-center bg-gray-700 hover:bg-blue-600 text-white font-medium py-2.5 rounded-xl transition">Beli Sekarang</a>
+                    </div>
+                `;
+
+                tableBody.innerHTML += `
+                    <tr class="bg-gray-800/20">
+                        <td class="px-4 py-3 font-medium text-white">${pkg.name}</td>
+                        <td class="px-4 py-3">Rp ${pkg.price}</td>
+                        <td class="px-4 py-3 text-xs text-gray-300">${pkg.contact}</td>
+                        <td class="px-4 py-3 text-center">
+                            <button onclick="deleteProduct(${pkg.id})" class="text-red-400 hover:text-red-500 bg-red-500/10 p-2 rounded-lg transition">
+                                <i class="fa-solid fa-trash-can"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.addProduct = function(e) {
+            e.preventDefault();
+            if(!window.isAdminLoggedIn) return alert("Akses ilegal!");
+            
+            const newProduct = {
+                id: Date.now(),
+                name: document.getElementById('pName').value,
+                price: document.getElementById('pPrice').value,
+                desc: document.getElementById('pDesc').value,
+                cpu: document.getElementById('pCpu').value,
+                disk: document.getElementById('pDisk').value,
+                contact: document.getElementById('pContact').value
+            };
+
+            products.push(newProduct);
+            localStorage.setItem('reycloud_products', JSON.stringify(products));
+            document.getElementById('productForm').reset();
+            alert("Produk berhasil ditambahkan!");
+            window.switchPage('shop');
+        }
+
+        window.deleteProduct = function(id) {
+            if(!window.isAdminLoggedIn) return alert("Akses ilegal!");
+            if(confirm("Apakah kamu yakin ingin menghapus produk ini?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('reycloud_products', JSON.stringify(products));
+                window.renderData();
+            }
+        }
+    </script>
+</body>
+</html>
