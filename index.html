@@ -47,7 +47,7 @@
         position: relative;
         width: 100%;
         max-width: 420px;
-        height: 750px; 
+        height: 650px; /* Disesuaikan sedikit lebih pendek karena opsi register dihapus */
         background: var(--card-bg);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
@@ -78,7 +78,7 @@
     }
 
     /* --- HOME COMPONENTS --- */
-    .profile-section { text-align: center; margin-bottom: 15px; }
+    .profile-section { text-align: center; margin-bottom: 20px; }
     .profile-img-box {
         width: 85px; height: 85px; margin: 0 auto 12px;
         border-radius: 50%; padding: 3px;
@@ -87,110 +87,57 @@
     }
     .profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #000; }
     
-    .video-wrapper { margin-bottom: 20px; transform: skewX(-10deg); }
+    .video-wrapper { margin-bottom: 25px; transform: skewX(-10deg); }
     .video-box { 
-        height: 80px; background: #000; border-radius: 10px; border: 2px solid rgba(219, 39, 119, 0.3); overflow: hidden;
+        height: 100px; background: #000; border-radius: 10px; border: 2px solid rgba(219, 39, 119, 0.3); overflow: hidden;
     }
     .video-box video { width: 120%; height: 100%; object-fit: cover; transform: skewX(10deg); margin-left: -10%; }
 
     .action-btn {
         background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); 
-        padding: 0.9rem; border-radius: 15px; display: flex; align-items: center; gap: 15px; 
-        color: white; cursor: pointer; margin-bottom: 10px; transition: 0.3s;
+        padding: 1.2rem; border-radius: 15px; display: flex; align-items: center; gap: 15px; 
+        color: white; cursor: pointer; margin-bottom: 15px; transition: 0.3s;
     }
     .action-btn:hover { background: rgba(219, 39, 119, 0.1); border-color: var(--accent-pink); transform: translateX(5px); }
-    .btn-icon-sq { width: 38px; height: 38px; background: rgba(219,39,119,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--accent-pink); border: 1px solid rgba(219,39,119,0.2); }
+    .btn-icon-sq { width: 45px; height: 45px; background: rgba(219,39,119,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--accent-pink); border: 1px solid rgba(219,39,119,0.2); font-size: 1.2rem; }
 
     /* --- SOCIAL GRID WIDGET --- */
-    .social-label {
-        font-family: var(--font-title);
-        font-size: 0.65rem;
-        color: var(--accent-cyan);
-        letter-spacing: 2px;
-        margin: 15px 0 10px;
-        text-align: center;
-        opacity: 0.7;
-    }
-
-    .social-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
-    .social-item {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        transition: 0.3s ease;
-        text-decoration: none;
-    }
-
+    .social-label { font-family: var(--font-title); font-size: 0.65rem; color: var(--accent-cyan); letter-spacing: 2px; margin: 20px 0 10px; text-align: center; opacity: 0.7; }
+    .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+    .social-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s ease; text-decoration: none; }
     .social-item i { font-size: 1.2rem; }
     .social-item span { font-size: 0.6rem; color: var(--text-gray); font-family: var(--font-title); }
-
-    .social-item:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateY(-3px);
-        border-color: var(--accent-cyan);
-    }
-
+    .social-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-3px); border-color: var(--accent-cyan); }
     .social-item.wa i { color: #25D366; }
     .social-item.ig i { color: #E4405F; }
     .social-item.tg i { color: #24A1DE; }
 
     /* --- FORM ELEMENTS --- */
-    .back-link { background: none; border: none; color: var(--text-gray); cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-family: var(--font-code); font-size: 0.8rem; }
+    .back-link { background: none; border: none; color: var(--text-gray); cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-family: var(--font-code); font-size: 0.8rem; }
     .form-header h2 { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 1px; }
-    .form-header p { color: var(--text-gray); font-size: 0.85rem; margin: 8px 0 20px; }
-
-    .input-box { margin-bottom: 1.1rem; position: relative; }
+    .form-header p { color: var(--text-gray); font-size: 0.85rem; margin: 8px 0 30px; }
+    .input-box { margin-bottom: 1.5rem; position: relative; }
     .lbl { font-size: 0.65rem; color: var(--accent-pink); letter-spacing: 2px; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; }
-    .inp {
-        width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 14px 14px 14px 45px; border-radius: 12px; color: white; font-family: var(--font-code); transition: 0.3s; font-size: 0.9rem;
-    }
+    .inp { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.15); padding: 14px 14px 14px 45px; border-radius: 12px; color: white; font-family: var(--font-code); transition: 0.3s; font-size: 0.9rem; }
     .inp:focus { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(147, 51, 234, 0.3); }
     .inp-icon { position: absolute; left: 15px; top: 36px; color: var(--text-gray); font-size: 0.9rem; }
+    .submit-btn { width: 100%; padding: 1rem; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple)); color: white; font-family: var(--font-title); font-weight: 700; letter-spacing: 2px; cursor: pointer; margin-top: 10px; box-shadow: 0 8px 25px rgba(219, 39, 119, 0.4); }
 
-    .submit-btn {
-        width: 100%; padding: 1rem; border-radius: 12px; border: none;
-        background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-        color: white; font-family: var(--font-title); font-weight: 700; letter-spacing: 2px;
-        cursor: pointer; margin-top: 10px; box-shadow: 0 8px 25px rgba(219, 39, 119, 0.4);
-    }
-
-    /* Google Button Divider & Container */
-    .divider {
-        display: flex; align-items: center; text-align: center; margin: 20px 0;
-        font-size: 0.75rem; color: var(--text-gray); letter-spacing: 2px;
-    }
-    .divider::before, .divider::after {
-        content: ''; flex: 1; border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
-    }
+    .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; font-size: 0.75rem; color: var(--text-gray); letter-spacing: 2px; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); }
     .divider:not(:empty)::before { margin-right: .5em; }
     .divider:not(:empty)::after { margin-left: .5em; }
-
-    #googleBtnContainer {
-        display: flex; justify-content: center; width: 100%; margin-top: 5px;
-    }
+    #googleBtnContainer { display: flex; justify-content: center; width: 100%; margin-top: 5px; }
 
     /* --- WIDGETS --- */
-    .footer-widget { margin-top: auto; text-align: center; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+    .footer-widget { margin-top: auto; text-align: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
     .clock { font-family: var(--font-title); font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; }
     .glow-orb { position: absolute; width: 250px; height: 250px; filter: blur(100px); opacity: 0.15; pointer-events: none; border-radius: 50%; }
     </style>
 </head>
 <body>
 
-    <div class="container-card" id="mainCard">
+    <div class="container-card">
         <div class="glow-orb" style="top:-80px; left:-80px; background:var(--accent-pink);"></div>
         <div class="glow-orb" style="bottom:-80px; right:-80px; background:var(--accent-purple);"></div>
 
@@ -219,33 +166,14 @@
                         <span style="display:block; font-weight:bold; font-family:var(--font-title); font-size:0.85rem;">LOGIN SYSTEM</span>
                         <span style="font-size:0.65rem; color:var(--text-gray)">Authorized Personnel Only</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="opacity:0.2; font-size:0.8rem;"></i>
-                </div>
-
-                <div onclick="switchView('view-register')" class="action-btn">
-                    <div class="btn-icon-sq" style="color:var(--accent-cyan)"><i class="fas fa-user-plus"></i></div>
-                    <div style="flex:1">
-                        <span style="display:block; font-weight:bold; font-family:var(--font-title); font-size:0.85rem;">REGISTER</span>
-                        <span style="font-size:0.65rem; color:var(--text-gray)">Create Security Identity</span>
-                    </div>
-                    <i class="fas fa-chevron-right" style="opacity:0.2; font-size:0.8rem;"></i>
                 </div>
             </div>
 
             <div class="social-label">SECURE COMMUNICATIONS</div>
             <div class="social-grid">
-                <a href="https://wa.me/6281260512743" target="_blank" class="social-item wa">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WHATSAPP</span>
-                </a>
-                <a href="https://instagram.com/reycloud_dev" target="_blank" class="social-item ig">
-                    <i class="fab fa-instagram"></i>
-                    <span>INSTAGRAM</span>
-                </a>
-                <a href="https://t.me/ReyCloudDev" target="_blank" class="social-item tg">
-                    <i class="fab fa-telegram-plane"></i>
-                    <span>TELEGRAM</span>
-                </a>
+                <a href="https://wa.me/6281260512743" target="_blank" class="social-item wa"><i class="fab fa-whatsapp"></i><span>WHATSAPP</span></a>
+                <a href="https://instagram.com/reycloud_dev" target="_blank" class="social-item ig"><i class="fab fa-instagram"></i><span>INSTAGRAM</span></a>
+                <a href="https://t.me/ReyCloudDev" target="_blank" class="social-item tg"><i class="fab fa-telegram-plane"></i><span>TELEGRAM</span></a>
             </div>
 
             <div class="footer-widget">
@@ -278,50 +206,19 @@
                 <button type="submit" class="submit-btn">INITIALIZE <i class="fas fa-power-off"></i></button>
             </form>
 
-            <!-- Bagian Pemisah untuk Opsi Google Sign-In -->
             <div class="divider">OR CHOOSE OAUTH</div>
             <div id="googleBtnContainer">
                 <div id="googleBtn"></div>
             </div>
         </div>
-
-        <!-- VIEW: REGISTER -->
-        <div id="view-register" class="view-section">
-            <button onclick="switchView('view-home')" class="back-link">
-                <i class="fas fa-arrow-left"></i> RETURN TO BASE
-            </button>
-            <div class="form-header">
-                <h2>REGISTRATION</h2>
-                <div style="height:3px; width:40px; background:var(--accent-cyan); margin: 6px 0; border-radius:10px;"></div>
-                <p>Register your new core identity.</p>
-            </div>
-            <form onsubmit="handleAuth(event)">
-                <div class="input-box">
-                    <label class="lbl" style="color:var(--accent-cyan)">NEW USERNAME</label>
-                    <input type="text" class="inp" placeholder="Username" required>
-                    <i class="fas fa-user-plus inp-icon"></i>
-                </div>
-                <div class="input-box">
-                    <label class="lbl" style="color:var(--accent-cyan)">SET SECURITY KEY</label>
-                    <input type="password" class="inp" placeholder="••••••••" required>
-                    <i class="fas fa-lock inp-icon"></i>
-                </div>
-                <button type="submit" class="submit-btn" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));">
-                    CREATE ACCOUNT <i class="fas fa-user-check"></i>
-                </button>
-            </form>
-        </div>
-
     </div>
 
     <script>
-        // Switch antar view section
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
             document.getElementById(viewId).classList.add('active-view');
         }
 
-        // Handle Login/Register manual
         function handleAuth(e) {
             e.preventDefault();
             const btn = e.target.querySelector('.submit-btn');
@@ -329,7 +226,6 @@
             setTimeout(() => { window.location.href = '/dashboard'; }, 1500);
         }
 
-        // Sistem Jam & Tanggal Aktif (Updated to 2026)
         function updateClock() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
@@ -342,42 +238,23 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Google Sign-In Initialization
         window.onload = () => {
             if (typeof google !== 'undefined') {
                 google.accounts.id.initialize({
                     client_id: "812635897612-p0o8v8ukkdifejhtb9lv3tsomcei08kf.apps.googleusercontent.com",
                     callback: handleCredentialResponse
                 });
-
                 google.accounts.id.renderButton(
                     document.getElementById("googleBtn"),
-                    { 
-                        theme: "filled_black", // Tema hitam bawaan Google cocok banget dengan tema kamu
-                        size: "large", 
-                        width: 350, // Disesuaikan agar pas dengan lebar form kamu
-                        shape: "pill" // Bentuk melengkung biar serasi dengan container-card
-                    }
+                    { theme: "filled_black", size: "large", width: 350, shape: "pill" }
                 );
-            } else {
-                console.error("Gagal memuat SDK Google Sign-In.");
             }
         };
 
-        // Handle Google OAuth Callback Response
         function handleCredentialResponse(response) {
-            try {
-                // Decode token payload
-                const payload = JSON.parse(atob(response.credential.split(".")[1]));
-                
-                // Simpan user di LocalStorage
-                localStorage.setItem("user", JSON.stringify(payload));
-                
-                // Beri efek transisi atau langsung redirect
-                window.location.href = "/dashboard";
-            } catch (error) {
-                console.error("Gagal memproses login Google:", error);
-            }
+            const payload = JSON.parse(atob(response.credential.split(".")[1]));
+            localStorage.setItem("user", JSON.stringify(payload));
+            window.location.href = "/dashboard";
         }
     </script>
 </body>
