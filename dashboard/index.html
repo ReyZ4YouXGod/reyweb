@@ -334,7 +334,15 @@ body{
 }
 
 .profile-card h2{
-    margin-bottom:8px;
+    margin-bottom:4px;
+}
+
+/* GMAIL STYLE */
+.profile-card .user-gmail{
+    color: var(--secondary);
+    font-size: 13px;
+    margin-bottom: 12px;
+    font-weight: 500;
 }
 
 .profile-card p{
@@ -465,7 +473,8 @@ body{
 </div>
 
 <div class="profile">
-<img src="https://a.top4top.io/p_3780dq4p22.png">
+<!-- ID ditaruh disini untuk foto kecil di header -->
+<img id="user-img-header" src="https://a.top4top.io/p_3780dq4p22.png">
 </div>
 
 </div>
@@ -477,7 +486,8 @@ body{
 </video>
 
 <div class="overlay">
-<h2></h2>
+<!-- Element Menyambut Nama User -->
+<h2 id="welcome-text">Halo!</h2>
 <p>Downloader • AI • Utility • Services</p>
 </div>
 
@@ -491,7 +501,6 @@ body{
 <p>
 Website modern untuk kebutuhan downloader,
 AI tools, utility tools, dan layanan digital.
-
 </p>
 </div>
 
@@ -715,6 +724,16 @@ Version 7.0 Stable Release
 <!-- CONTACT -->
 <div class="page" id="contact">
 
+<div class="section-title">User Account</div>
+
+<!-- Bagian Profil User yang Login via Google -->
+<div class="profile-card">
+<img id="user-img-profile" src="https://a.top4top.io/p_3780dq4p22.png">
+<h2 id="user-name">User Name</h2>
+<div id="user-email" class="user-gmail">user@gmail.com</div>
+<p>Logged in via Google Auth System</p>
+</div>
+
 <div class="section-title">Developer</div>
 
 <div class="profile-card">
@@ -811,6 +830,24 @@ Web Developer • Script Developer • UI Designer
 </div>
 
 <script>
+// Fungsi load data user dari Google Auth (localStorage) saat halaman dibuka
+function loadUserData() {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+        const user = JSON.parse(userData);
+        
+        // Memasukkan data ke ID masing-masing
+        if(document.getElementById('user-name')) document.getElementById('user-name').innerText = user.name;
+        if(document.getElementById('user-email')) document.getElementById('user-email').innerText = user.email;
+        if(document.getElementById('welcome-text')) document.getElementById('welcome-text').innerText = "Halo, " + user.name + "!";
+        
+        if(document.getElementById('user-img-header')) document.getElementById('user-img-header').src = user.picture;
+        if(document.getElementById('user-img-profile')) document.getElementById('user-img-profile').src = user.picture;
+    }
+}
+
+// Jalankan auto-load data
+window.onload = loadUserData;
 
 function showPage(pageId, btn){
 
