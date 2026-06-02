@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Library Resmi Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <style>
     :root {
         --bg-dark: #080310;       
@@ -44,7 +47,7 @@
         position: relative;
         width: 100%;
         max-width: 420px;
-        height: 750px; /* Sedikit lebih tinggi untuk menampung widget baru */
+        height: 750px; 
         background: var(--card-bg);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
@@ -164,6 +167,21 @@
         cursor: pointer; margin-top: 10px; box-shadow: 0 8px 25px rgba(219, 39, 119, 0.4);
     }
 
+    /* Google Button Divider & Container */
+    .divider {
+        display: flex; align-items: center; text-align: center; margin: 20px 0;
+        font-size: 0.75rem; color: var(--text-gray); letter-spacing: 2px;
+    }
+    .divider::before, .divider::after {
+        content: ''; flex: 1; border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+    }
+    .divider:not(:empty)::before { margin-right: .5em; }
+    .divider:not(:empty)::after { margin-left: .5em; }
+
+    #googleBtnContainer {
+        display: flex; justify-content: center; width: 100%; margin-top: 5px;
+    }
+
     /* --- WIDGETS --- */
     .footer-widget { margin-top: auto; text-align: center; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
     .clock { font-family: var(--font-title); font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; }
@@ -176,6 +194,7 @@
         <div class="glow-orb" style="top:-80px; left:-80px; background:var(--accent-pink);"></div>
         <div class="glow-orb" style="bottom:-80px; right:-80px; background:var(--accent-purple);"></div>
 
+        <!-- VIEW: HOME -->
         <div id="view-home" class="view-section active-view">
             <div class="profile-section">
                 <div class="profile-img-box">
@@ -235,6 +254,7 @@
             </div>
         </div>
 
+        <!-- VIEW: LOGIN -->
         <div id="view-login" class="view-section">
             <button onclick="switchView('view-home')" class="back-link">
                 <i class="fas fa-arrow-left"></i> RETURN TO BASE
@@ -257,8 +277,15 @@
                 </div>
                 <button type="submit" class="submit-btn">INITIALIZE <i class="fas fa-power-off"></i></button>
             </form>
+
+            <!-- Bagian Pemisah untuk Opsi Google Sign-In -->
+            <div class="divider">OR CHOOSE OAUTH</div>
+            <div id="googleBtnContainer">
+                <div id="googleBtn"></div>
+            </div>
         </div>
 
+        <!-- VIEW: REGISTER -->
         <div id="view-register" class="view-section">
             <button onclick="switchView('view-home')" class="back-link">
                 <i class="fas fa-arrow-left"></i> RETURN TO BASE
@@ -288,11 +315,13 @@
     </div>
 
     <script>
+        // Switch antar view section
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
             document.getElementById(viewId).classList.add('active-view');
         }
 
+        // Handle Login/Register manual
         function handleAuth(e) {
             e.preventDefault();
             const btn = e.target.querySelector('.submit-btn');
@@ -300,6 +329,7 @@
             setTimeout(() => { window.location.href = '/dashboard'; }, 1500);
         }
 
+        // Sistem Jam & Tanggal Aktif (Updated to 2026)
         function updateClock() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
@@ -307,11 +337,48 @@
             document.getElementById('clock').innerText = `${h}:${m}`;
             const days = ["MINGGU","SENIN","SELASA","RABU","KAMIS","JUMAT","SABTU"];
             const months = ["JAN","FEB","MAR","APR","MEI","JUN","JUL","AGU","SEP","OKT","NOV","DES"];
-            document.getElementById('date').innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} 2026`;
+            document.getElementById('date').innerText = `${days[now.getDay()]} , ${now.getDate()} ${months[now.getMonth()]} 2026`;
         }
         setInterval(updateClock, 1000);
         updateClock();
+
+        // Google Sign-In Initialization
+        window.onload = () => {
+            if (typeof google !== 'undefined') {
+                google.accounts.id.initialize({
+                    client_id: "812635897612-p0o8v8ukkdifejhtb9lv3tsomcei08kf.apps.googleusercontent.com",
+                    callback: handleCredentialResponse
+                });
+
+                google.accounts.id.renderButton(
+                    document.getElementById("googleBtn"),
+                    { 
+                        theme: "filled_black", // Tema hitam bawaan Google cocok banget dengan tema kamu
+                        size: "large", 
+                        width: 350, // Disesuaikan agar pas dengan lebar form kamu
+                        shape: "pill" // Bentuk melengkung biar serasi dengan container-card
+                    }
+                );
+            } else {
+                console.error("Gagal memuat SDK Google Sign-In.");
+            }
+        };
+
+        // Handle Google OAuth Callback Response
+        function handleCredentialResponse(response) {
+            try {
+                // Decode token payload
+                const payload = JSON.parse(atob(response.credential.split(".")[1]));
+                
+                // Simpan user di LocalStorage
+                localStorage.setItem("user", JSON.stringify(payload));
+                
+                // Beri efek transisi atau langsung redirect
+                window.location.href = "/dashboard";
+            } catch (error) {
+                console.error("Gagal memproses login Google:", error);
+            }
+        }
     </script>
 </body>
 </html>
-
