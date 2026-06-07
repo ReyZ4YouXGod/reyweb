@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>FakeCall Generator</title>
+
+<style>
+body{
+  background:#111;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  padding:20px;
+}
+
+.back-btn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  background:#2563eb;
+  color:white;
+  text-decoration:none;
+  padding:10px 16px;
+  border-radius:10px;
+  font-weight:bold;
+  box-shadow:0 4px 15px rgba(0,0,0,.3);
+}
+
+.back-btn:hover{
+  opacity:.9;
+}
+
+input,button{
+  width:90%;
+  padding:10px;
+  margin:6px;
+  background:#1f1f1f;
+  border:1px solid #333;
+  border-radius:8px;
+  color:white;
+}
+
+button{
+  background:#00a884;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+#resultImg{
+  width:360px;
+  max-width:100%;
+  margin-top:20px;
+  border-radius:12px;
+  display:none;
+}
+</style>
+</head>
+<body>
+
+<a href="/dashboard" class="back-btn">
+  ← Dashboard
+</a>
+
+<h2>FakeCall Generator</h2>
+
+<input
+type="text"
+id="nama"
+placeholder="Nama Caller (misal: Sayang)"
+>
+
+<input
+type="text"
+id="durasi"
+placeholder="Durasi (misal: 00:08)"
+>
+
+<input
+type="file"
+id="avatar"
+accept="image/*"
+>
+
+<button onclick="generate()">
+Generate FakeCall
+</button>
+
+<img id="resultImg">
+
+<a
+id="downloadBtn"
+style="display:none;margin-top:10px;"
+download="fakecall.jpg"
+>
+<button>
+Download FakeCall
+</button>
+</a>
+
+<canvas
+id="canvas"
+width="720"
+height="1280"
+style="display:none;"
+></canvas>
+
+<script>
+
+async function generate(){
+
+  const nama =
+  document.getElementById("nama").value ||
+  "Unknown";
+
+  const durasi =
+  document.getElementById("durasi").value ||
+  "00:00";
+
+  const file =
+  document.getElementById("avatar").files[0];
+
+  if(!file){
+    alert("Upload foto dulu bro!");
+    return;
+  }
+
+  const avatarURL =
+  await fileToUrl(file);
+
+  const canvas =
+  document.getElementById("canvas");
+
+  const ctx =
+  canvas.getContext("2d");
+
+  const bg =
+  await loadImg(
+  "https://files.catbox.moe/pmhptv.jpg"
+  );
+
+  ctx.drawImage(
+  bg,
+  0,
+  0,
+  720,
+  1280
+  );
+
+  ctx.font =
+  "bold 65px sans-serif";
+
+  ctx.fillStyle =
+  "white";
+
+  ctx.textAlign =
+  "center";
+
+  ctx.fillText(
+  nama,
+  360,
+  200
+  );
+
+  ctx.font =
+  "48px sans-serif";
+
+  ctx.fillStyle =
+  "#d1d1d1";
+
+  ctx.fillText(
+  durasi,
+  360,
+  270
+  );
+
+  const avatarImg =
+  await loadImg(
+  avatarURL
+  );
+
+  ctx.save();
+
+  ctx.beginPath();
+
+  ctx.arc(
+  360,
+  640,
+  200,
+  0,
+  Math.PI * 2
+  );
+
+  ctx.clip();
+
+  ctx.drawImage(
+  avatarImg,
+  160,
+  440,
+  400,
+  400
+  );
+
+  ctx.restore();
+
+  const dataURL =
+  canvas.toDataURL(
+  "image/jpeg"
+  );
+
+  const result =
+  document.getElementById(
+  "resultImg"
+  );
+
+  result.src =
+  dataURL;
+
+  result.style.display =
+  "block";
+
+  const dl =
+  document.getElementById(
+  "downloadBtn"
+  );
+
+  dl.href =
+  dataURL;
+
+  dl.style.display =
+  "block";
+}
+
+function loadImg(src){
+
+  return new Promise(res=>{
+
+    const img =
+    new Image();
+
+    img.crossOrigin =
+    "anonymous";
+
+    img.onload =
+    ()=>res(img);
+
+    img.src =
+    src;
+
+  });
+
+}
+
+function fileToUrl(file){
+
+  return new Promise(res=>{
+
+    const r =
+    new FileReader();
+
+    r.onload =
+    ()=>res(r.result);
+
+    r.readAsDataURL(file);
+
+  });
+
+}
+
+</script>
+
+</body>
+</html>
