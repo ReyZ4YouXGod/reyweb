@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Struk Gambar Generator</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <style>
+    /* Menggunakan font monospace agar identik dengan printer thermal kasir asli */
+    .font-receipt {
+      font-family: 'Courier New', Courier, monospace;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen py-10 px-4 md:px-8">
+
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <div class="lg:col-span-7 bg-white p-6 rounded-xl shadow-md h-fit border border-gray-200">
+      <div class="flex items-center gap-3 mb-6 border-b pb-4">
+        <span class="text-3xl">🧾</span>
+        <div>
+          <h1 class="text-xl font-bold text-gray-800">Struk Gambar Generator</h1>
+          <p class="text-xs text-gray-500">Isi data di bawah, preview kanan akan otomatis terupdate secara live.</p>
+        </div>
+      </div>
+      
+      <form id="strukForm" class="space-y-6">
+        <div>
+          <h2 class="text-xs font-bold mb-3 text-blue-600 uppercase tracking-wider">1. Informasi Toko</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Nama Toko</label>
+              <input type="text" id="tokoNama" value="ReyCloudShop" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">No. Telepon</label>
+              <input type="text" id="tokoTelp" value="6281260512743" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-gray-600">Alamat Toko</label>
+              <input type="text" id="tokoAlamat" value="Kavling Sambau 4 Depan Pondok Pesantren" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Kota</label>
+              <input type="text" id="tokoKota" value="Batam" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t pt-4">
+          <h2 class="text-xs font-bold mb-3 text-blue-600 uppercase tracking-wider">2. Detail Transaksi</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Nama Kasir</label>
+              <input type="text" id="kasir" value="ReyCloud" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Nama Pelanggan</label>
+              <input type="text" id="pelanggan" value="Sheila" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-gray-600">Nomor Struk (Gunakan '-' untuk acak otomatis)</label>
+              <input type="text" id="nomorStruk" value="No.849302" class="mt-1 block w-full p-2 border rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none" oninput="updatePreview()">
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t pt-4">
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="text-xs font-bold text-blue-600 uppercase tracking-wider">3. Daftar Item / Produk</h2>
+            <button type="button" id="addItemBtn" class="bg-blue-600 text-white px-3 py-1 rounded-md text-xs font-semibold hover:bg-blue-700 transition">+ Tambah Item</button>
+          </div>
+          
+          <div id="itemsContainer" class="space-y-2">
+            <div class="item-row grid grid-cols-12 gap-2 items-center bg-gray-50 p-2 rounded-lg border border-gray-100">
+              <input type="text" class="itemNama col-span-4 p-1.5 border rounded text-xs outline-none" value="Indomie Goreng" placeholder="Nama Barang" oninput="updatePreview()">
+              <input type="number" class="itemQty col-span-2 p-1.5 border rounded text-xs text-center outline-none" value="1" placeholder="Qty" oninput="updatePreview()">
+              <input type="text" class="itemSatuan col-span-2 p-1.5 border rounded text-xs text-center outline-none" value="lusin" placeholder="Satuan" oninput="updatePreview()">
+              <input type="number" class="itemHarga col-span-3 p-1.5 border rounded text-xs outline-none" value="36000" placeholder="Harga" oninput="updatePreview()">
+              <button type="button" class="col-span-1 text-red-500 font-bold remove-item-btn hover:text-red-700 text-center text-sm">×</button>
+            </div>
+            <div class="item-row grid grid-cols-12 gap-2 items-center bg-gray-50 p-2 rounded-lg border border-gray-100">
+              <input type="text" class="itemNama col-span-4 p-1.5 border rounded text-xs outline-none" value="Fruit Tea Apple" placeholder="Nama Barang" oninput="updatePreview()">
+              <input type="number" class="itemQty col-span-2 p-1.5 border rounded text-xs text-center outline-none" value="1" placeholder="Qty" oninput="updatePreview()">
+              <input type="text" class="itemSatuan col-span-2 p-1.5 border rounded text-xs text-center outline-none" value="500 ml" placeholder="Satuan" oninput="updatePreview()">
+              <input type="number" class="itemHarga col-span-3 p-1.5 border rounded text-xs outline-none" value="7000" placeholder="Harga" oninput="updatePreview()">
+              <button type="button" class="col-span-1 text-red-500 font-bold remove-item-btn hover:text-red-700 text-center text-sm">×</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t pt-4">
+          <h2 class="text-xs font-bold mb-3 text-blue-600 uppercase tracking-wider">4. Pembayaran</h2>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Metode Pembayaran</label>
+              <select id="metodeBayar" class="mt-1 block w-full p-2 border rounded text-sm outline-none" onchange="updatePreview()">
+                <option value="Cash">Cash (Tunai)</option>
+                <option value="QRIS">QRIS</option>
+                <option value="Transfer">Transfer Bank</option>
+                <option value="Debit">Kartu Debit</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Uang Bayar (Rp)</label>
+              <input type="number" id="bayar" value="70000" class="mt-1 block w-full p-2 border rounded text-sm outline-none" oninput="updatePreview()">
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="downloadImgBtn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 rounded-lg shadow-md hover:opacity-90 transition text-sm flex justify-center items-center gap-2">
+          📸 Download Hasil Struk (PNG)
+        </button>
+      </form>
+    </div>
+
+    <div class="lg:col-span-5 flex flex-col items-center">
+      <h2 class="text-xs font-bold mb-3 text-gray-500 uppercase tracking-wider self-start">Live Preview Foto Struk:</h2>
+      
+      <div id="strukCanvas" class="bg-white p-5 border border-gray-300 shadow-xl text-black font-receipt text-[11px] w-[280px] leading-relaxed select-none">
+        
+        <div class="flex justify-center mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/>
+            <path d="M17.8 9.6a2 2 0 0 1-3.6 0 2 2 0 0 1-3.6 0 2 2 0 0 1-3.6 0"/>
+            <path d="M3 21h18"/>
+            <path d="M4 21V9"/>
+            <path d="M20 21V9"/>
+            <path d="M4 9h16"/>
+            <path d="M5 9l1.2-5h11.6L19 9"/>
+            <path d="M10 13h4"/>
+          </svg>
+        </div>
+
+        <div class="text-center space-y-0.5 mb-2">
+          <div id="viewTokoNama" class="font-bold text-[13px] uppercase">Karis Jaya Shop</div>
+          <div id="viewTokoAlamat">Jl. Dr. Ir. H. Soekarno No.19, Medokan Semampir</div>
+          <div id="viewTokoKota">Surabaya</div>
+          <div id="viewTokoTelp">No. Telp 0812345678</div>
+        </div>
+
+        <div class="border-t border-dashed border-black my-2.5"></div>
+
+        <div class="flex justify-between">
+          <span id="viewTanggal">2026-06-03</span>
+          <span id="viewKasir">karis</span>
+        </div>
+        <div class="flex justify-between">
+          <span id="viewJam">18.28</span>
+          <span id="viewPelanggan">Sheila</span>
+        </div>
+        <div id="viewNomorStruk" class="mt-1 font-bold">No.849302</div>
+
+        <div class="border-t border-dashed border-black my-2.5"></div>
+
+        <div id="viewItemsList" class="space-y-2">
+          </div>
+
+        <div class="border-t border-dashed border-black my-2.5"></div>
+
+        <div class="mb-1">Total QTY : <span id="viewTotalQty">0</span></div>
+        <div class="flex justify-between">
+          <span>Sub Total</span>
+          <span id="viewSubTotal">Rp 0</span>
+        </div>
+        <div class="flex justify-between font-bold text-[13px] my-1">
+          <span>Total</span>
+          <span id="viewTotal">Rp 0</span>
+        </div>
+        <div class="flex justify-between">
+          <span id="viewLabelBayar">Bayar (Cash)</span>
+          <span id="viewBayar">Rp 0</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Kembali</span>
+          <span id="viewKembali">Rp 0</span>
+        </div>
+
+        <div class="border-t border-dashed border-black my-3"></div>
+
+        <div class="text-center space-y-0.5">
+          <div class="font-bold">Terimakasih Telah Berbelanja</div>
+          <div class="text-[9px]">Simpan struk ini sebagai bukti pembayaran</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const itemsContainer = document.getElementById('itemsContainer');
+    const addItemBtn = document.getElementById('addItemBtn');
+
+    // Helper Utility: Format mata uang rupiah
+    function formatRupiah(val) {
+      return 'Rp ' + Number(val || 0).toLocaleString('id-ID');
+    }
+
+    // Helper Utility: Format angka biasa (titik ribuan)
+    function formatAngka(val) {
+      return Number(val || 0).toLocaleString('id-ID');
+    }
+
+    // Menghasikan Waktu Real-time Jakarta Masa Kini secara otomatis saat Load
+    function initWaktu() {
+      const sekarang = new Date();
+      
+      const tanggalFormat = sekarang.toLocaleDateString('id-ID', {
+        year: 'numeric', month: '2-digit', day: '2-digit'
+      }).split('/').reverse().join('-'); // format: YYYY-MM-DD
+      
+      const jamFormat = sekarang.toLocaleTimeString('id-ID', {
+        hour: '2-digit', minute: '2-digit', hour12: false
+      }).replace(':', '.');
+
+      document.getElementById('viewTanggal').innerText = tanggalFormat;
+      document.getElementById('viewJam').innerText = jamFormat;
+    }
+
+    // Fungsi Pengendali Sinkronisasi Data Form ke Gambar Struk (Live Update)
+    function updatePreview() {
+      // 1. Sinkronisasi Profil Toko
+      document.getElementById('viewTokoNama').innerText = document.getElementById('tokoNama').value || '-';
+      document.getElementById('viewTokoAlamat').innerText = document.getElementById('tokoAlamat').value || '';
+      document.getElementById('viewTokoKota').innerText = document.getElementById('tokoKota').value || '';
+      
+      const telpInput = document.getElementById('tokoTelp').value;
+      document.getElementById('viewTokoTelp').innerText = telpInput ? 'No. Telp ' + telpInput : '';
+      
+      // 2. Sinkronisasi Data Pelanggan & Kasir
+      document.getElementById('viewKasir').innerText = document.getElementById('kasir').value || '-';
+      document.getElementById('viewPelanggan').innerText = document.getElementById('pelanggan').value || '-';
+      
+      // Handle Auto Number Struk jika kosong
+      const inputNoStruk = document.getElementById('nomorStruk').value;
+      if (!inputNoStruk || inputNoStruk === '-') {
+        document.getElementById('viewNomorStruk').innerText = 'No.' + Math.floor(100000 + Math.random() * 900000);
+      } else {
+        document.getElementById('viewNomorStruk').innerText = inputNoStruk;
+      }
+
+      // 3. Looping Pemrosesan Data Item/Barang Belanja
+      const itemRows = document.querySelectorAll('.item-row');
+      const listContainer = document.getElementById('viewItemsList');
+      listContainer.innerHTML = ''; // bersihkan preview lama
+
+      let totalQty = 0;
+      let totalBelanja = 0;
+
+      itemRows.forEach((row, index) => {
+        const nama = row.querySelector('.itemNama').value || '-';
+        const qty = parseInt(row.querySelector('.itemQty').value) || 0;
+        const satuan = row.querySelector('.itemSatuan').value || '';
+        const harga = parseInt(row.querySelector('.itemHarga').value) || 0;
+        const subtotal = qty * harga;
+
+        totalQty += qty;
+        totalBelanja += subtotal;
+
+        // Cetak baris item belanja baru ke canvas struk
+        const itemElement = document.createElement('div');
+        itemElement.className = 'text-black';
+        itemElement.innerHTML = `
+          <div class="font-bold">${index + 1}. ${nama}</div>
+          <div class="flex justify-between text-[10px]">
+            <span>&nbsp;&nbsp;${qty}${satuan ? ' ' + satuan : ''} x ${formatAngka(harga)}</span>
+            <span>${formatRupiah(subtotal)}</span>
+          </div>
+        `;
+        listContainer.appendChild(itemElement);
+      });
+
+      // 4. Kalkulasi Akhir (Total, Bayar, Kembali)
+      const nominalBayar = parseInt(document.getElementById('bayar').value) || 0;
+      const kembalian = nominalBayar - totalBelanja;
+      const opsiMetode = document.getElementById('metodeBayar').value;
+
+      document.getElementById('viewTotalQty').innerText = totalQty;
+      document.getElementById('viewSubTotal').innerText = formatRupiah(totalBelanja);
+      document.getElementById('viewTotal').innerText = formatRupiah(totalBelanja);
+      document.getElementById('viewLabelBayar').innerText = `Bayar (${opsiMetode})`;
+      document.getElementById('viewBayar').innerText = formatRupiah(nominalBayar);
+      document.getElementById('viewKembali').innerText = formatRupiah(kembalian);
+    }
+
+    // Handler Tambah Elemen Form Item Baru
+    addItemBtn.addEventListener('click', () => {
+      const newRow = document.createElement('div');
+      newRow.className = 'item-row grid grid-cols-12 gap-2 items-center bg-gray-50 p-2 rounded-lg border border-gray-100';
+      newRow.innerHTML = `
+        <input type="text" class="itemNama col-span-4 p-1.5 border rounded text-xs outline-none" placeholder="Nama Barang" oninput="updatePreview()">
+        <input type="number" class="itemQty col-span-2 p-1.5 border rounded text-xs text-center outline-none" value="1" placeholder="Qty" oninput="updatePreview()">
+        <input type="text" class="itemSatuan col-span-2 p-1.5 border rounded text-xs text-center outline-none" placeholder="Satuan" oninput="updatePreview()">
+        <input type="number" class="itemHarga col-span-3 p-1.5 border rounded text-xs outline-none" value="0" placeholder="Harga" oninput="updatePreview()">
+        <button type="button" class="col-span-1 text-red-500 font-bold remove-item-btn hover:text-red-700 text-center text-sm">×</button>
+      `;
+      itemsContainer.appendChild(newRow);
+      updatePreview();
+    });
+
+    // Handler Hapus Elemen Form Item
+    itemsContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-item-btn')) {
+        e.target.closest('.item-row').remove();
+        updatePreview();
+      }
+    });
+
+    // FUNGSI UTAMA: EKSPOR HTML PREVIEW MENJADI FILE FOTO PNG
+    document.getElementById('downloadImgBtn').addEventListener('click', () => {
+      const targetElement = document.getElementById('strukCanvas');
+      
+      // Pemicu rendering dari DOM HTML ke HTML5 Canvas biner gambar
+      html2canvas(targetElement, {
+        scale: 3,             // Resolusi tinggi (3x lipat) biar foto tidak pecah/blur saat dizoom
+        backgroundColor: "#ffffff", // Latar belakang foto berwarna putih bersih kertas
+        logging: false,       // Matikan log konsol untuk performa optimal
+        useCORS: true         // Mengizinkan aset eksternal jika ada tambahan logo
+      }).then(canvas => {
+        // Konversi canvas ke URI Data Gambar PNG
+        const imgDataUrl = canvas.toDataURL('image/png');
+        
+        // Pembuatan link download virtual otomatis
+        const downloadLink = document.createElement('a');
+        downloadLink.download = `Struk-${document.getElementById('tokoNama').value.replace(/[^a-zA-Z0-9]/g, '-')}-${Date.now()}.png`;
+        downloadLink.href = imgDataUrl;
+        
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      });
+    });
+
+    // Inisialisasi awal saat halaman diakses pertama kali
+    initWaktu();
+    updatePreview();
+  </script>
+</body>
+</html>
