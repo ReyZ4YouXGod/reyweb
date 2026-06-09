@@ -1,4 +1,4 @@
-const API_URL = "https://your-backend.vercel.app/api/upload";
+const API_URL = "https://tourl-five.vercel.app/api/upload";
 
 async function upload(){
     let file = document.getElementById("file").files[0];
