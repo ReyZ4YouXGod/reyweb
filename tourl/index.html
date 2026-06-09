@@ -2,114 +2,345 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TO URL PRO</title>
+<title>TO URL PRO MAX</title>
 
 <style>
 body{
     margin:0;
     font-family:Arial;
-    background:radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-    color:white;
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    transition:0.3s;
 }
 
-/* glass effect */
+/* THEME */
+body.dark{
+    background:#0b0b0b;
+    color:#fff;
+}
+
+body.light{
+    background:#f2f2f2;
+    color:#111;
+}
+
 .box{
-    width:380px;
-    background:rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border:1px solid rgba(255,255,255,0.1);
+    width:440px;
     padding:20px;
-    border-radius:16px;
+    border-radius:14px;
     text-align:center;
-    box-shadow:0 0 25px rgba(0,255,153,0.1);
+    transition:0.3s;
 }
 
-h3{
-    margin-top:0;
-    letter-spacing:1px;
+/* BOX THEME */
+body.dark .box{
+    background:#161616;
+    box-shadow:0 0 25px rgba(0,255,153,0.12);
 }
 
-input{
-    width:100%;
-    margin-top:10px;
-    color:white;
+body.light .box{
+    background:#fff;
+    box-shadow:0 0 25px rgba(0,0,0,0.1);
 }
 
-button{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    background:#00ff99;
-    border:none;
-    font-weight:bold;
-    cursor:pointer;
-    border-radius:8px;
-}
-
-button:hover{
-    background:#00cc77;
-}
-
-#result{
-    margin-top:15px;
-    word-break:break-all;
-    background:rgba(0,0,0,0.4);
-    padding:10px;
-    border-radius:10px;
-    font-size:13px;
-}
-
-a{
-    color:#00ff99;
-}
-
-.topbar{
+/* TOP BAR */
+.top{
     display:flex;
     justify-content:space-between;
-    font-size:12px;
-    opacity:0.7;
+    align-items:center;
     margin-bottom:10px;
 }
 
-.back{
-    cursor:pointer;
-    color:#aaa;
+.title{
+    font-weight:bold;
 }
 
-.back:hover{
+.back, .toggle{
+    padding:6px 10px;
+    border:none;
+    border-radius:6px;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.toggle{
+    background:#00ff99;
+    font-weight:bold;
+}
+
+/* DROP */
+.drop{
+    border:2px dashed #00ff99;
+    padding:40px;
+    border-radius:12px;
+    cursor:pointer;
+    user-select:none;
+    transition:0.2s;
+}
+
+.drop.hover{
+    background:#1a1a1a;
+    transform:scale(1.02);
+}
+
+/* PROGRESS */
+#progressWrap{
+    width:100%;
+    height:10px;
+    background:#222;
+    border-radius:10px;
+    margin-top:12px;
+    overflow:hidden;
+}
+
+#bar{
+    width:0%;
+    height:100%;
+    background:#00ff99;
+    transition:0.15s;
+}
+
+/* STATUS */
+#status{
+    margin-top:10px;
+    font-size:13px;
+    opacity:0.8;
+}
+
+/* RESULT */
+#result{
+    margin-top:15px;
+    padding:10px;
+    border-radius:10px;
+    word-break:break-all;
+    font-size:13px;
+    text-align:left;
+}
+
+body.dark #result{ background:#111; }
+body.light #result{ background:#eee; }
+
+img, video{
+    width:100%;
+    margin-top:10px;
+    border-radius:10px;
+}
+
+/* COPY BUTTON */
+.copyBtn{
+    margin-top:10px;
+    padding:8px 12px;
+    background:#00ff99;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:15px;
+    font-size:12px;
+    text-align:center;
+    opacity:0.8;
+}
+
+.neon{
     color:#00ff99;
+    text-shadow:0 0 5px #00ff99, 0 0 10px #00ff99;
+    animation: glow 1.5s infinite alternate;
+    font-weight:bold;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 5px #00ff99; }
+    to{ text-shadow:0 0 15px #00ff99, 0 0 25px #00ff99; }
+}
+
+.typing{
+    display:inline-block;
+    border-right:2px solid #00ff99;
+    white-space:nowrap;
+    overflow:hidden;
+    animation: typing 3s steps(20) infinite, blink .7s infinite;
+}
+
+@keyframes typing{
+    0%{ width:0 }
+    50%{ width:100% }
+    100%{ width:0 }
+}
+
+@keyframes blink{
+    50%{ border-color:transparent }
+}
+
+.footer a{
+    color:#aaa;
+    text-decoration:none;
+    margin:0 5px;
+}
+
+.footer a:hover{
+    color:#00ff99;
+}
+
+.badge{
+    background:#00ff99;
+    color:#000;
+    padding:2px 6px;
+    border-radius:6px;
+    font-size:10px;
+    margin-left:5px;
+    font-weight:bold;
 }
 </style>
 </head>
 
-<body>
+<body class="dark">
 
 <div class="box">
 
-    <div class="topbar">
-        <span>TO URL SYSTEM</span>
-        <span class="back" onclick="goDashboard()">← dashboard</span>
+    <div class="top">
+        <div class="title">TO URL PRO MAX</div>
+
+        <div>
+            <button class="toggle" onclick="toggleMode()">🌙</button>
+            <button class="back" onclick="location.href='/dashboard'">Back Dashboard</button>
+        </div>
     </div>
 
-    <h3>UPLOAD FILE</h3>
+    <div class="drop" id="drop">
+        DROP / CLICK FILE HERE
+    </div>
 
-    <input type="file" id="file">
+    <input type="file" id="file" hidden>
 
-    <button onclick="upload()">UPLOAD</button>
+    <div id="progressWrap">
+        <div id="bar"></div>
+    </div>
 
-    <div id="result">Ready...</div>
+    <div id="status">idle</div>
+
+    <div id="result">ready</div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+
+        <div class="typing neon">
+            ReyCloudDev System Running...
+        </div>
+
+        <br>
+
+        <a href="/dashboard">Dashboard</a> |
+        <a href="https://github.com/" target="_blank">GitHub</a>
+
+        <span class="badge">v1.0 PRO MAX</span>
+
+    </div>
 
 </div>
 
-<script src="upload.js"></script>
-
 <script>
-function goDashboard(){
-    window.location.href = "/dashboard";
+const drop = document.getElementById("drop");
+const fileInput = document.getElementById("file");
+const bar = document.getElementById("bar");
+const status = document.getElementById("status");
+const result = document.getElementById("result");
+
+drop.onclick = ()=> fileInput.click();
+
+drop.addEventListener("dragover", e=>{
+    e.preventDefault();
+    drop.classList.add("hover");
+});
+
+drop.addEventListener("dragleave", ()=>{
+    drop.classList.remove("hover");
+});
+
+drop.addEventListener("drop", e=>{
+    e.preventDefault();
+    drop.classList.remove("hover");
+    upload(e.dataTransfer.files[0]);
+});
+
+fileInput.onchange = ()=> upload(fileInput.files[0]);
+
+function upload(file){
+    if(!file) return;
+
+    let form = new FormData();
+    form.append("file", file);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://tourl-reyclouddev.vercel.app/api/upload");
+
+    status.innerText = "uploading...";
+    bar.style.width = "0%";
+
+    xhr.upload.onprogress = (e)=>{
+        if(e.lengthComputable){
+            let percent = (e.loaded / e.total) * 100;
+            bar.style.width = percent + "%";
+            status.innerText = "uploading " + percent.toFixed(0) + "%";
+        }
+    };
+
+    xhr.onload = ()=>{
+        try{
+            let data = JSON.parse(xhr.responseText);
+
+            if(data.raw){
+                bar.style.width = "100%";
+                status.innerText = "done ✔";
+
+                let preview = "";
+
+                if(file.type.startsWith("image")){
+                    preview = `<img src="${data.raw}">`;
+                } else if(file.type.startsWith("video")){
+                    preview = `<video controls src="${data.raw}"></video>`;
+                }
+
+                result.innerHTML = `
+RAW LINK:<br>
+<code>${data.raw}</code>
+
+<button class="copyBtn" onclick="copyLink('${data.raw}')">
+COPY LINK
+</button>
+
+${preview}
+                `;
+            } else {
+                status.innerText = "failed";
+                result.innerText = data.message || "error";
+            }
+
+        }catch(e){
+            status.innerText = "response error";
+        }
+    };
+
+    xhr.onerror = ()=>{
+        status.innerText = "upload error";
+    };
+
+    xhr.send(form);
+}
+
+function copyLink(text){
+    navigator.clipboard.writeText(text);
+    status.innerText = "copied ✔";
+}
+
+function toggleMode(){
+    document.body.classList.toggle("light");
+    document.body.classList.toggle("dark");
 }
 </script>
 
