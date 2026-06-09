@@ -1,1023 +1,1108 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ReyCloudDev</title>
-
+<title>RevinzaDesigner</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
-
 :root{
     --bg:#0f172a;
-    --card:#111827;
+    --card:#1e293b;
     --primary:#8b5cf6;
     --secondary:#ec4899;
     --text:#f8fafc;
     --soft:#94a3b8;
+    --border:rgba(0,0,0,.3);
+    --shadow:rgba(0,0,0,.3);
 }
-
+[data-theme="light"]{
+    --bg:#f5f5f0;
+    --card:#ffffff;
+    --primary:#8b5cf6;
+    --secondary:#ec4899;
+    --text:#1a1a1a;
+    --soft:#666666;
+    --border:rgba(0,0,0,.15);
+    --shadow:rgba(0,0,0,.15);
+}
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:'Segoe UI',sans-serif;
+    transition: background-color 0.3s, color 0.3s;
 }
-
 body{
-    background:
-    radial-gradient(circle at top right,#312e81 0%,transparent 25%),
-    radial-gradient(circle at bottom left,#831843 0%,transparent 25%),
-    var(--bg);
-
+    background:var(--bg);
     color:var(--text);
-
     min-height:100vh;
-
-    padding:20px;
-    padding-bottom:120px;
+    padding-bottom:170px;
+    overflow-x: hidden;
 }
-
-/* PAGE */
-.page{
-    display:none;
-    animation:fade .3s ease;
-}
-
-.page.active{
-    display:block;
-}
-
-@keyframes fade{
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* HEADER */
+.page{display:none;animation:fade .3s ease;}
+.page.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-
-    margin-bottom:20px;
-}
-
-.logo h1{
-    font-size:30px;
-    font-weight:800;
-}
-
-.logo span{
-    color:var(--secondary);
-}
-
-.profile{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    overflow:hidden;
-
-    border:2px solid var(--primary);
-}
-
-.profile img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-/* BANNER */
-.banner{
-    width:100%;
-    height:220px;
-
-    border-radius:30px;
-    overflow:hidden;
-
+    padding:20px;
     position:relative;
-
-    margin-bottom:25px;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:
-    0 0 30px rgba(139,92,246,.25);
 }
-
-.banner video{
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.brand-logo{
+    width:50px;
+    height:50px;
+    border-radius:16px;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    color:white;
+    box-shadow:0 4px 15px rgba(139,92,246,.3);
+    overflow:hidden;
+}
+.brand-logo img{
     width:100%;
     height:100%;
     object-fit:cover;
 }
-
-.overlay{
+.brand-text h1{font-size:22px;font-weight:800;}
+.brand-text p{font-size:12px;color:var(--soft);}
+.header-right{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+.action-btn{
+    width:44px;
+    height:44px;
+    border-radius:16px;
+    border:2px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 6px 0 var(--shadow), 0 8px 20px var(--shadow);
+    transition:.2s;
+}
+.action-btn:active{
+    transform:translateY(6px);
+    box-shadow:0 0 0 var(--shadow), 0 2px 5px var(--shadow);
+}
+.action-btn.status{
+    width:auto;
+    height: 26px;
+    padding:0 10px;
+    gap:6px;
+    font-size:11px;
+    font-weight:700;
+    color:#22c55e;
+    border-radius: 8px;
+    box-shadow: none;
+    pointer-events: none;
+    transform: none;
+}
+.theme-btn{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:linear-gradient(135deg, #f59e0b, #d97706);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 4px 0 rgba(0,0,0,.3);
+    transition:.2s;
+}
+.theme-btn:active{
+    transform:translateY(4px);
+    box-shadow:0 0 0 rgba(0,0,0,.3);
+}
+.dropdown-menu{
     position:absolute;
-    inset:0;
-
-    background:linear-gradient(
-        to top,
-        rgba(15,23,42,.95),
-        transparent
-    );
-
+    top:55px;
+    left:20px;
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:20px;
+    padding:10px;
+    min-width:200px;
+    box-shadow:0 10px 40px rgba(0,0,0,.4);
+    z-index:1000;
+    display:none;
+    animation:dropdownFade .2s ease;
+}
+.dropdown-menu.show{display:block;}
+@keyframes dropdownFade{
+    from{opacity:0;transform:translateY(-10px);}
+    to{opacity:1;transform:translateY(0);}
+}
+.dropdown-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 16px;
+    border-radius:14px;
+    cursor:pointer;
+    transition:.2s;
+    font-size:14px;
+    font-weight:600;
+}
+.dropdown-item:hover{background:rgba(139,92,246,.1);}
+.dropdown-item i{
+    font-size:18px;
+    width:24px;
+    text-align:center;
+}
+.dropdown-divider{
+    height:1px;
+    background:var(--border);
+    margin:8px 0;
+}
+.banner-slider{
+    padding:0 20px 20px;
+    overflow:hidden;
+    touch-action: pan-y;
+}
+.banner-track{
+    display:flex;
+    gap:15px;
+    transition:transform .4s ease;
+}
+.banner-slide{
+    min-width:100%;
+    height:180px;
+    border-radius:24px;
+    padding:22px;
+    position:relative;
+    overflow:hidden;
+    border:2px solid rgba(0,0,0,.3);
+    box-shadow:0 6px 0 rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.3);
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
-
-    padding:20px;
+    user-select:none;
 }
-
-.overlay h2{
-    font-size:24px;
-    margin-bottom:6px;
-}
-
-.overlay p{
-    font-size:13px;
-    color:#d1d5db;
-}
-
-/* SECTION */
-.section-title{
+.banner-slide h2{font-size:22px;font-weight:800;margin-bottom:6px;color:white;}
+.banner-slide p{font-size:13px;color:#cbd5e1;line-height:1.5;}
+.banner-slide .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    padding:6px 14px;
+    background:rgba(139,92,246,.2);
+    border-radius:20px;
     font-size:12px;
+    font-weight:700;
+    color:var(--primary);
+    width:fit-content;
+}
+.banner-slide .video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+}
+.banner-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 1;
+}
+.banner-slide h2, 
+.banner-slide p, 
+.banner-slide .tag {
+    position: relative;
+    z-index: 2;
+}
+.banner-dots{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:12px;
+}
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(255,255,255,.2);
+    cursor:pointer;
+    transition:.3s;
+    border:2px solid rgba(0,0,0,.2);
+}
+.dot.active{width:24px;border-radius:10px;background:var(--primary);}
+.card-upin{
+    background:var(--card);
+    border-radius:24px;
+    border:2px solid var(--border);
+    box-shadow:0 6px 0 var(--shadow), 0 8px 20px var(--shadow);
+    transition:.2s;
+}
+.card-upin:active{
+    transform:translateY(6px);
+    box-shadow:0 0 0 var(--shadow), 0 2px 5px var(--shadow);
+}
+.greeting-card{
+    margin:0 20px 20px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+.greeting-icon{
+    width:56px;
+    height:56px;
+    border-radius:20px;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    color:white;
+    flex-shrink:0;
+    border:2px solid var(--border);
+    box-shadow:0 4px 0 var(--shadow);
+}
+.greeting-text h3{font-size:17px;font-weight:700;margin-bottom:4px;}
+.greeting-text p{font-size:13px;color:var(--soft);line-height:1.5;}
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:25px 20px 15px;
+    font-size:14px;
     font-weight:800;
     text-transform:uppercase;
     letter-spacing:2px;
-
     color:var(--secondary);
-
-    margin-bottom:15px;
 }
-
-/* INFO BOX */
-.info-box{
-    background:rgba(17,24,39,.75);
-
-    backdrop-filter:blur(12px);
-
-    padding:18px;
-
-    border-radius:25px;
-
-    border:1px solid rgba(255,255,255,.05);
-
-    margin-bottom:18px;
-}
-
-.info-box h3{
-    margin-bottom:10px;
-}
-
-.info-box p{
-    color:#cbd5e1;
-    line-height:1.7;
-    font-size:14px;
-}
-
-/* GRID */
-.grid{
+.grid-2{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:15px;
+    gap:14px;
+    padding:0 20px;
 }
-
-/* CARD */
-.card{
-    position:relative;
-
-    background:rgba(17,24,39,.75);
-
-    backdrop-filter:blur(12px);
-
-    border-radius:25px;
-
-    padding:24px 16px;
-
-    text-decoration:none;
-    color:white;
-
+.option-card{
+    padding:22px;
+    text-align:center;
+    cursor:pointer;
+}
+.option-card.active{
+    background:linear-gradient(135deg, rgba(139,92,246,.2) 0%, var(--card) 100%);
+    border-color:var(--primary);
+}
+.option-card .icon-box{
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:rgba(139,92,246,.1);
     display:flex;
-    flex-direction:column;
     align-items:center;
     justify-content:center;
-
-    gap:12px;
-
-    overflow:hidden;
-
-    border:1px solid rgba(255,255,255,.05);
-
-    transition:.3s;
+    font-size:24px;
+    margin:0 auto 10px;
+    color:var(--primary);
+    border:2px solid var(--border);
 }
-
-.card::before{
-    content:'';
-
-    position:absolute;
-
-    width:120px;
-    height:120px;
-
-    background:rgba(255,255,255,.03);
-
-    border-radius:50%;
-
-    top:-40px;
-    right:-40px;
+.option-card.active .icon-box{
+    background:var(--primary);
+    color:white;
 }
-
-.card:hover{
-    transform:translateY(-6px);
-
-    border-color:var(--primary);
-
-    box-shadow:
-    0 10px 25px rgba(139,92,246,.18);
+.option-card h4{font-size:15px;font-weight:700;margin-bottom:4px;}
+.option-card p{font-size:12px;color:var(--soft);}
+.tools-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+    padding:0 20px;
 }
-
-.card i{
-    font-size:30px;
-}
-
-.card span{
-    font-size:12px;
-    font-weight:700;
+.tool-card{
+    padding:20px 10px;
     text-align:center;
-}
-
-/* FEATURED */
-.featured-card{
-    overflow:hidden;
-}
-
-.badge{
-    position:absolute;
-
-    top:12px;
-    right:12px;
-
-    background:linear-gradient(
-        45deg,
-        var(--primary),
-        var(--secondary)
-    );
-
-    padding:4px 8px;
-
-    border-radius:20px;
-
-    font-size:9px;
-    font-weight:700;
-}
-
-/* ICON COLORS */
-.tiktok i{
-    color:#FE2C55;
-}
-
-.fake i{
-    color:#ff4444;
-}
-
-.iqc i{
-    color:#38bdf8;
-}
-
-.pin i{
-    color:#E60023;
-}
-
-.ai i{
-    color:#00e5ff;
-}
-
-.spotify i{
-    color:#1DB954;
-}
-
-/* PROFILE */
-.profile-card{
-    background:rgba(17,24,39,.75);
-
-    backdrop-filter:blur(12px);
-
-    border-radius:30px;
-
-    padding:30px 20px;
-
-    text-align:center;
-
-    border:1px solid rgba(255,255,255,.05);
-
-    margin-bottom:20px;
-}
-
-.profile-card img{
-    width:110px;
-    height:110px;
-
-    border-radius:50%;
-
-    object-fit:cover;
-
-    border:4px solid var(--primary);
-
-    margin-bottom:18px;
-}
-
-.profile-card h2{
-    margin-bottom:4px;
-}
-
-/* GMAIL STYLE */
-.profile-card .user-gmail{
-    color: var(--secondary);
-    font-size: 13px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-.profile-card p{
-    color:var(--soft);
-    line-height:1.7;
-}
-
-/* CONTACT */
-.contact-list{
+    text-decoration:none;
+    color:var(--text);
     display:flex;
     flex-direction:column;
-    gap:15px;
-}
-
-.contact-item{
-    background:rgba(17,24,39,.75);
-
-    border-radius:22px;
-
-    padding:18px;
-
-    display:flex;
-    justify-content:space-between;
     align-items:center;
-
+}
+.tool-card i{
+    font-size:28px;
+    margin-bottom:8px;
+    display:block;
+}
+.tool-card.tiktok i{color:#FE2C55;}
+.tool-card.ai i{color:#00e5ff;}
+.tool-card.music i{color:#1DB954;}
+.tool-card.game i{color:#ff9800;}
+.tool-card.photo i{color:#ec4899;}
+.tool-card.video i{color:#ff4444;}
+.tool-card span{font-size:11px;font-weight:600;}
+.service-card{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:18px 20px;
+    margin-bottom:14px;
     text-decoration:none;
-    color:white;
-
-    border:1px solid rgba(255,255,255,.05);
-
-    transition:.3s;
+    color:var(--text);
 }
-
-.contact-item:hover{
-    transform:translateY(-4px);
-    border-color:var(--primary);
-}
-
-.left{
+.service-icon{
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
     display:flex;
     align-items:center;
-    gap:15px;
+    justify-content:center;
+    font-size:22px;
+    color:white;
+    flex-shrink:0;
+    border:2px solid var(--border);
+    box-shadow:0 4px 0 var(--shadow);
 }
-
-.left i{
-    font-size:24px;
+.service-info{flex:1;}
+.service-info h4{font-size:15px;font-weight:700;margin-bottom:4px;}
+.service-info p{font-size:12px;color:var(--soft);line-height:1.4;}
+.service-badge{
+    padding:6px 12px;
+    background:rgba(139,92,246,.15);
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--primary);
+    border:2px solid var(--border);
 }
-
-.left h3{
-    font-size:15px;
-    margin-bottom:4px;
+.audio-player{
+    position:fixed;
+    bottom:95px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:480px;
+    padding:12px 16px;
+    display:grid;
+    grid-template-columns: auto 1fr auto;
+    align-items:center;
+    gap:12px;
+    z-index:100;
+    overflow:hidden;
 }
-
-.left p{
+.audio-cover{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    flex-shrink:0;
+    border:2px solid var(--border);
+    box-shadow:0 4px 0 var(--shadow);
+    overflow:hidden;
+    position:relative;
+}
+.audio-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.audio-info{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.audio-info h5{
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    margin-bottom:2px;
+}
+.audio-info p{
+    font-size:11px;
+    color:var(--soft);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.audio-right-controls{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.audio-controls{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.audio-btn{
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:rgba(255,255,255,.05);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
     font-size:12px;
+    cursor:pointer;
+    box-shadow:0 3px 0 var(--shadow);
+    transition:.2s;
+}
+.audio-btn:active{
+    transform:translateY(3px);
+    box-shadow:0 0 0 var(--shadow);
+}
+.audio-btn.play{
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    color:white;
+    font-size:14px;
+}
+.audio-btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+.audio-vol{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.audio-vol i{
+    font-size:14px;
     color:var(--soft);
 }
-
-/* NAVBAR */
+.audio-vol i.muted{
+    color:#ef4444;
+}
+.audio-vol input[type="range"]{
+    width:60px;
+    height:4px;
+    -webkit-appearance:none;
+    appearance:none;
+    background:rgba(128,128,128,.25);
+    border-radius:10px;
+    outline:none;
+    cursor:pointer;
+}
+@media (max-width: 420px) {
+    .audio-vol input[type="range"] {
+        display: none;
+    }
+}
+.audio-vol input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    cursor:pointer;
+    border:2px solid var(--card);
+}
+.audio-vol input[type="range"]::-moz-range-thumb{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    cursor:pointer;
+    border:2px solid var(--card);
+}
+.progress-container{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:rgba(128,128,128,.15);
+}
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--primary), var(--secondary));
+    transition:width 0.1s linear;
+}
 .navbar{
     position:fixed;
-
     bottom:15px;
     left:50%;
-
     transform:translateX(-50%);
-
-    width:95%;
-    max-width:500px;
-
-    height:78px;
-
-    background:rgba(17,24,39,.85);
-
-    backdrop-filter:blur(14px);
-
-    border-radius:30px;
-
+    width:92%;
+    max-width:480px;
+    height:70px;
     display:flex;
     justify-content:space-around;
     align-items:center;
-
-    border:1px solid rgba(255,255,255,.05);
-
     z-index:999;
+    padding:0 10px;
 }
-
 .nav-btn{
     background:none;
     border:none;
-
-    color:#94a3b8;
-
+    color:var(--soft);
     display:flex;
     flex-direction:column;
     align-items:center;
-
-    gap:5px;
-
-    font-size:11px;
-    font-weight:700;
-
+    gap:4px;
+    font-size:10px;
+    font-weight:600;
     cursor:pointer;
-
-    transition:.3s;
+    transition:.2s;
+    padding:8px 16px;
+    border-radius:16px;
 }
-
-.nav-btn i{
-    font-size:20px;
-}
-
+.nav-btn i{font-size:20px;}
 .nav-btn.active{
     color:var(--primary);
-    transform:translateY(-4px);
+    background:rgba(139,92,246,.1);
 }
-
+.info-box{
+    padding:20px;
+    margin:0 20px 14px;
+}
+.info-box h3{font-size:16px;font-weight:700;margin-bottom:10px;}
+.info-box p{color:var(--soft);line-height:1.7;font-size:14px;}
+.profile-card{
+    padding:28px 20px;
+    text-align:center;
+    margin:0 20px 18px;
+}
+.profile-card img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--primary);
+    margin-bottom:16px;
+}
+.profile-card h2{font-size:20px;margin-bottom:4px;}
+.profile-card .role{color:var(--secondary);font-size:13px;margin-bottom:10px;}
+.profile-card p{color:var(--soft);font-size:14px;}
+.contact-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    padding:0 20px;
+}
+.contact-item{
+    padding:16px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    text-decoration:none;
+    color:var(--text);
+}
+.contact-item .left{display:flex;align-items:center;gap:14px;}
+.contact-item .left i{font-size:24px;}
+.contact-item .left h3{font-size:15px;margin-bottom:3px;}
+.contact-item .left p{font-size:12px;color:var(--soft);}
 </style>
 </head>
 <body>
-
-<!-- HOME -->
 <div class="page active" id="home">
-
 <div class="header">
-
-<div class="logo">
-<h1>REY<span>CLOUDDEV</span></h1>
+    <div class="header-left">
+        <button class="action-btn" onclick="toggleDropdown()" id="menuBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="brand">
+            <div class="brand-logo">
+                <img src="https://e.top4top.io/p_3812pnqwm6.jpg" alt="Profile">
+            </div>
+            <div class="brand-text">
+                <h1>ReyCloudDev</h1>
+            </div>
+        </div>
+    </div>
+    <div class="header-right">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Ganti Tema">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <div class="action-btn status"><i class="fa-solid fa-shield-halved"></i><span>Aman</span></div>
+    </div>
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-item" onclick="showPage('home', document.querySelectorAll('.nav-btn')[0]); toggleDropdown();">
+            <i class="fa-solid fa-house" style="color:var(--primary);"></i><span>Home</span>
+        </div>
+        <div class="dropdown-item" onclick="showPage('tools', document.querySelectorAll('.nav-btn')[1]); toggleDropdown();">
+            <i class="fa-solid fa-layer-group" style="color:var(--secondary);"></i><span>All Tools</span>
+        </div>
+        <div class="dropdown-item" onclick="showPage('info', document.querySelectorAll('.nav-btn')[2]); toggleDropdown();">
+            <i class="fa-solid fa-circle-info" style="color:#38bdf8;"></i><span>Information</span>
+        </div>
+        <div class="dropdown-item" onclick="showPage('contact', document.querySelectorAll('.nav-btn')[3]); toggleDropdown();">
+            <i class="fa-solid fa-user" style="color:#f59e0b;"></i><span>Profile</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item" onclick="toggleTheme(); toggleDropdown();">
+            <i class="fa-solid fa-palette" style="color:var(--primary);"></i><span>Toggle Theme</span>
+        </div>
+        <div class="dropdown-item" onclick="alert('Version 7.0\nReyCloudDev Dashboard'); toggleDropdown();">
+            <i class="fa-solid fa-circle-info" style="color:#22c55e;"></i><span>About App</span>
+        </div>
+    </div>
 </div>
-
-<div class="profile">
-<!-- ID ditaruh disini untuk foto kecil di header -->
-<img id="user-img-header" src="https://a.top4top.io/p_3780dq4p22.png">
+<div class="banner-slider" id="bannerSlider">
+    <div class="banner-track" id="bannerTrack">
+        <div class="banner-slide" style="background:#0b0f19;">
+            <video class="video-bg" autoplay loop muted playsinline preload="auto">
+                <source src="https://files.catbox.moe/00xajd.mp4" type="video/mp4">
+            </video>
+            <h2>Tools Premium, Murah Je!</h2>
+            <p>Downloader, AI, Utility tools, dan layanan developer dalam satu website.</p>
+            <div class="tag"><i class="fa-solid fa-sparkles"></i> ReyCloudDev - Layanan Online</div>
+        </div>
+        <div class="banner-slide" style="background:#0f172a;">
+            <video class="video-bg" autoplay loop muted playsinline preload="auto">
+                <source src="https://files.catbox.moe/00xajd.mp4" type="video/mp4">
+            </video>
+            <h2>Hujan-Hujan, Tetap Bisa!</h2>
+            <p>Meski hujan, tetap bisa akses tools dengan aman dan nyaman.</p>
+            <div class="tag" style="background:rgba(34,197,94,.2);color:#22c55e;"><i class="fa-solid fa-cloud-rain"></i> RevinzaDesigner - Layanan Online</div>
+        </div>
+    </div>
+    <div class="banner-dots">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot" onclick="goToSlide(1)"></div>
+    </div>
 </div>
-
+<div class="greeting-card card-upin">
+    <div class="greeting-icon"><i class="fa-solid fa-hand-peace"></i></div>
+    <div class="greeting-text">
+        <h3>Hai! Mau ngapain hari ini?</h3>
+        <p>Pilih tools di bawah, tinggal klik — gampang je!</p>
+    </div>
 </div>
-
-<div class="banner">
-
-<video autoplay muted loop playsinline>
-<source src="https://l.top4top.io/m_38052yna86.mp4" type="video/mp4">
-</video>
-
-<div class="overlay">
-<!-- Element Menyambut Nama User -->
-<h2 id="welcome-text">Halo!</h2>
-<p>Downloader • AI • Utility • Services</p>
+<div class="section-title"><i class="fa-solid fa-globe"></i> Pilih Kategori</div>
+<div class="grid-2">
+    <div class="option-card card-upin active" onclick="selectCategory(this)">
+        <div class="icon-box"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        <h4>Tools</h4>
+        <p>Downloader & Utility</p>
+    </div>
+    <div class="option-card card-upin" onclick="selectCategory(this)">
+        <div class="icon-box"><i class="fa-solid fa-server"></i></div>
+        <h4>Services</h4>
+        <p>VPS & Panel</p>
+    </div>
 </div>
-
+<div class="section-title"><i class="fa-solid fa-fire"></i> Popular Tools</div>
+<div class="tools-grid">
+    <a href="/tiktok" class="tool-card card-upin tiktok"><i class="fa-brands fa-tiktok"></i><span>TikTok DL</span></a>
+    <a href="/ai" class="tool-card card-upin ai"><i class="fa-solid fa-robot"></i><span>Chat AI</span></a>
+    <a href="/spotify" class="tool-card card-upin music"><i class="fa-brands fa-spotify"></i><span>Music</span></a>
+    <a href="/fakeff" class="tool-card card-upin game"><i class="fa-solid fa-gamepad"></i><span>Fake FF</span></a>
+    <a href="/ppcouple" class="tool-card card-upin photo"><i class="fa-solid fa-heart"></i><span>PP Couple</span></a>
+    <a href="/ytmp3" class="tool-card card-upin video"><i class="fa-brands fa-youtube"></i><span>YT MP3</span></a>
 </div>
-
-<div class="section-title">Welcome</div>
-
-<div class="info-box">
-<h3>Modern Dashboard</h3>
-
-<p>
-Website modern untuk kebutuhan downloader,
-AI tools, utility tools, dan layanan digital.
-</p>
+<div class="section-title"><i class="fa-solid fa-credit-card"></i> Layanan</div>
+<div style="padding:0 20px;">
+    <a href="https://saweria.co/reyzcloud" class="service-card card-upin">
+        <div class="service-icon"><i class="fa-solid fa-qrcode"></i></div>
+        <div class="service-info"><h4>Dukung Developer Lewat Saweria!</h4><p>Makasih Yang Udah Donasi & Dukung</p></div>
+        <div class="service-badge">V1</div>
+    </a>
+    <a href="/vps" class="service-card card-upin">
+        <div class="service-icon" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);"><i class="fa-solid fa-server"></i></div>
+        <div class="service-info"><h4>VPS Server</h4><p>Server cepat dengan harga terjangkau</p></div>
+    </a>
+    <a href="/panel" class="service-card card-upin">
+        <div class="service-icon" style="background:linear-gradient(135deg, #f59e0b, #d97706);"><i class="fa-solid fa-terminal"></i></div>
+        <div class="service-info"><h4>Panel Hosting</h4><p>Panel Pterodactyl & manage server</p></div>
+    </a>
 </div>
-
-<div class="section-title">Popular Features</div>
-
-<div class="grid">
-
-<a href="/tiktok" class="card tiktok featured-card">
-<div class="badge">HOT</div>
-<i class="fa-brands fa-tiktok"></i>
-<span>TIKTOK DL</span>
-</a>
-
-<a href="/fakewafat" class="card fake featured-card">
-<div class="badge">TREND</div>
-<i class="fa-solid fa-skull-crossbones"></i>
-<span>FAKE WAFAT</span>
-</a>
-
-<a href="/iqcphone" class="card iqc featured-card">
-<div class="badge">NEW</div>
-<i class="fa-solid fa-mobile-screen-button"></i>
-<span>IQCPHONE</span>
-</a>
-
-<a href="/pintersert" class="card pin featured-card">
-<div class="badge">BEST</div>
-<i class="fa-brands fa-pinterest"></i>
-<span>PINTEREST</span>
-</a>
-
-<a href="/fakeff" class="card featured-card">
-<div class="badge">NEW</div>
-<i class="fa-solid fa-gamepad" style="color:#ff9800;"></i>
-<span>FAKE LOBBY FF</span>
-</a>
-    
 </div>
-
+<div class="page" id="tools">
+<div class="header">
+    <div class="header-left">
+        <button class="action-btn" onclick="toggleDropdown()" id="menuBtn2">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="brand">
+            <div class="brand-logo">
+                <img src="https://e.top4top.io/p_3812pnqwm6.jpg" alt="Profile">
+            </div>
+            <div class="brand-text"><h1>All Tools</h1><p>Downloader & Utility</p></div>
+        </div>
+    </div>
+    <div class="header-right">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn2" title="Ganti Tema">
+            <i class="fa-solid fa-moon" id="themeIcon2"></i>
+        </button>
+        <button class="action-btn" onclick="showPage('home', document.querySelectorAll('.nav-btn')[0])" style="width: 38px; height: 38px; border-radius: 12px; font-size: 14px; box-shadow: 0 4px 0 var(--shadow);"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
 </div>
-
-<!-- FITUR -->
-<div class="page" id="fitur">
-
-<!-- POPULAR -->
-<div class="section-title">Popular Tools</div>
-
-<div class="grid">
-
-<a href="/tiktok" class="card tiktok featured-card">
-<div class="badge">HOT</div>
-<i class="fa-brands fa-tiktok"></i>
-<span>TIKTOK DL</span>
-</a>
-
-<a href="/fakewafat" class="card fake featured-card">
-<div class="badge">TREND</div>
-<i class="fa-solid fa-skull-crossbones"></i>
-<span>FAKE WAFAT</span>
-</a>
-
-<a href="/iqcphone" class="card iqc featured-card">
-<div class="badge">NEW</div>
-<i class="fa-solid fa-mobile-screen-button"></i>
-<span>IQCPHONE</span>
-</a>
-
-<a href="/pintersert" class="card pin featured-card">
-<div class="badge">BEST</div>
-<i class="fa-brands fa-pinterest"></i>
-<span>PINTEREST</span>
-</a>
-
-<a href="/fakestory" class="card featured-card">
-<div class="badge">NEW</div>
-<i class="fa-brands fa-instagram" style="color:#E1306C;"></i>
-<span>FAKE STORY IG</span>
-</a>
-
-<a href="/fakeff" class="card featured-card">
-<div class="badge">NEW</div>
-<i class="fa-solid fa-gamepad" style="color:#ff9800;"></i>
-<span>FAKE LOBBY FF</span>
-</a>
-
-<a href="/ppcouple" class="card featured-card">
-<div class="badge">NEW</div>
-<i class="fa-solid fa-heart" style="color:#ec4899;"></i>
-<span>PP COUPLE</span>
-</a>
-
-<a href="/spotify" class="card featured-card">
-<div class="badge">HOT</div>
-<i class="fa-brands fa-spotify" style="color:#1DB954;"></i>
-<span>SPOTIFY MUSIC</span>
-</a>
-
-<a href="/fakecall" class="card featured-card"> <div class="badge">HOT</div> <i class="fa-solid fa-phone" style="color:#22c55e;"></i> <span>FAKE CALL</span> </a> <a href="/struk" class="card featured-card"> <div class="badge">NEW</div> <i class="fa-solid fa-receipt" style="color:#f59e0b;"></i> <span>STRUK GEN</span> </a> 
-
-<a href="/randomcecan" class="card featured-card">
-<div class="badge">TREND</div>
-<i class="fa-solid fa-camera-retro" style="color:#ec4899;"></i>
-<span>RANDOM CECAN</span>
-</a>
-    
+<div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-fire"></i> Popular</div>
+<div class="tools-grid">
+    <a href="/tiktok" class="tool-card card-upin tiktok"><i class="fa-brands fa-tiktok"></i><span>TikTok DL</span></a>
+    <a href="/fakewafat" class="tool-card card-upin"><i class="fa-solid fa-skull-crossbones" style="color:#ff4444;"></i><span>Fake Wafat</span></a>
+    <a href="/iqcphone" class="tool-card card-upin"><i class="fa-solid fa-mobile-screen-button" style="color:#38bdf8;"></i><span>IQCPhone</span></a>
+    <a href="/pintersert" class="tool-card card-upin"><i class="fa-brands fa-pinterest" style="color:#E60023;"></i><span>Pinterest</span></a>
+    <a href="/fakestory" class="tool-card card-upin"><i class="fa-brands fa-instagram" style="color:#E1306C;"></i><span>Fake Story</span></a>
+    <a href="/fakeff" class="tool-card card-upin game"><i class="fa-solid fa-gamepad"></i><span>Fake FF</span></a>
+    <a href="/ppcouple" class="tool-card card-upin photo"><i class="fa-solid fa-heart"></i><span>PP Couple</span></a>
+    <a href="/spotify" class="tool-card card-upin music"><i class="fa-brands fa-spotify"></i><span>Spotify</span></a>
+    <a href="/fakecall" class="tool-card card-upin"><i class="fa-solid fa-phone" style="color:#22c55e;"></i><span>Fake Call</span></a>
+    <a href="/struk" class="tool-card card-upin"><i class="fa-solid fa-receipt" style="color:#f59e0b;"></i><span>Struk Gen</span></a>
+    <a href="/randomcecan" class="tool-card card-upin photo"><i class="fa-solid fa-camera-retro"></i><span>Random Cecan</span></a>
+    <a href="/tourl" class="tool-card card-upin"><i class="fa-solid fa-image" style="color:var(--primary);"></i><span>To URL</span></a>
 </div>
-
-<!-- SERVICES -->
-<div class="section-title">Services</div>
-
-<div class="grid" style="margin-bottom:25px;">
-
-<a href="/vps" class="card">
-<i class="fa-solid fa-server"></i>
-<span>VPS</span>
-</a>
-
-<a href="/panel" class="card">
-<i class="fa-solid fa-terminal"></i>
-<span>PANEL</span>
-</a>
-
-<a href="/script" class="card">
-<i class="fa-solid fa-code"></i>
-<span>SCRIPT</span>
-</a>
-
-<a href="/domain" class="card">
-<i class="fa-solid fa-globe"></i>
-<span>DOMAIN</span>
-</a>
-
+<div class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI & Utility</div>
+<div class="tools-grid">
+    <a href="/ai" class="tool-card card-upin ai"><i class="fa-solid fa-robot"></i><span>Chat AI</span></a>
+    <a href="/removebg" class="tool-card card-upin"><i class="fa-solid fa-scissors" style="color:var(--primary);"></i><span>Remove BG</span></a>
+    <a href="/remini" class="tool-card card-upin"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--primary);"></i><span>Enhance</span></a>
+    <a href="/ytmp3" class="tool-card card-upin video"><i class="fa-brands fa-youtube"></i><span>YT MP3</span></a>
+    <a href="/ytmp4" class="tool-card card-upin video"><i class="fa-brands fa-youtube"></i><span>YT MP4</span></a>
+    <a href="/qc" class="tool-card card-upin"><i class="fa-solid fa-comment" style="color:var(--primary);"></i><span>Quote Chat</span></a>
+    <a href="/ssweb" class="tool-card card-upin"><i class="fa-solid fa-camera" style="color:var(--primary);"></i><span>SS Web</span></a>
 </div>
-
-<!-- AI & TOOLS -->
-<div class="section-title">AI & Utility</div>
-
-<div class="grid">
-
-<a href="/ai" class="card ai">
-<i class="fa-solid fa-robot"></i>
-<span>CHAT AI</span>
-</a>
-
-<a href="/tourl" class="card">
-<i class="fa-solid fa-image"></i>
-<span>TO URL</span>
-</a>
-
-<a href="/removebg" class="card">
-<i class="fa-solid fa-scissors"></i>
-<span>REMOVE BG</span>
-</a>
-
-<a href="/remini" class="card">
-<i class="fa-solid fa-wand-magic-sparkles"></i>
-<span>ENHANCE</span>
-</a>
-
-<a href="/ytmp3" class="card">
-<i class="fa-brands fa-youtube"></i>
-<span>YT MP3</span>
-</a>
-
-<a href="/ytmp4" class="card">
-<i class="fa-brands fa-youtube"></i>
-<span>YT MP4</span>
-</a>
-
-<a href="/qc" class="card">
-<i class="fa-solid fa-comment"></i>
-<span>QUOTE CHAT</span>
-</a>
-
-<a href="/ssweb" class="card">
-<i class="fa-solid fa-camera"></i>
-<span>SS WEB</span>
-</a>
-
 </div>
-
-</div>
-
-<!-- INFO -->
 <div class="page" id="info">
-
-<div class="section-title">Information</div>
-
-<div class="info-box">
-<h3>About Website</h3>
-
-<p>
-ReyCloudDev adalah dashboard modern
-yang menyediakan berbagai tools digital,
-AI tools, downloader, utility tools,
-dan layanan developer dalam satu website.
-</p>
+<div class="header">
+    <div class="header-left">
+        <button class="action-btn" onclick="toggleDropdown()" id="menuBtn3">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="brand">
+            <div class="brand-logo">
+                <img src="https://e.top4top.io/p_3812pnqwm6.jpg" alt="Profile">
+            </div>
+            <div class="brand-text"><h1>Information</h1><p>About & Status</p></div>
+        </div>
+    </div>
+    <div class="header-right">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn3" title="Ganti Tema">
+            <i class="fa-solid fa-moon" id="themeIcon3"></i>
+        </button>
+    </div>
 </div>
-
-<div class="info-box">
-<h3>Website Features</h3>
-
-<p>
-• TikTok Downloader <br>
-• Fake Wafat Generator <br>
-• IQCPHONE Tools <br>
-• Pinterest Search <br>
-• AI Assistant <br>
-• Remove Background <br>
-• Screenshot Website <br>
-• YouTube MP3 & MP4
-</p>
+<div style="margin-top:20px;">
+    <div class="info-box card-upin"><h3>About Website</h3><p>ReyCloudDev adalah dashboard modern yang menyediakan berbagai tools digital, AI tools, downloader, utility tools, dan layanan developer dalam satu website.</p></div>
+    <div class="info-box card-upin"><h3>Website Features</h3><p>• TikTok Downloader<br>• Fake Wafat Generator<br>• IQCPHONE Tools<br>• Pinterest Search<br>• AI Assistant<br>• Remove Background<br>• Screenshot Website<br>• YouTube MP3 & MP4</p></div>
+    <div class="info-box card-upin"><h3>System Status</h3><p style="color:#22c55e;">● All systems operational</p><p style="margin-top:8px;color:var(--soft);">Version 7.0 Stable Release</p></div>
 </div>
-
-<div class="info-box">
-<h3>System Status</h3>
-
-<p style="color:#22c55e;">
-● All systems operational
-</p>
-
-<p style="margin-top:8px;">
-Version 7.0 Stable Release
-</p>
 </div>
-
-</div>
-
-<!-- CONTACT -->
 <div class="page" id="contact">
-
-<div class="section-title">User Account</div>
-
-<div class="profile-card">
-
-<img id="user-img-profile"
-src="https://a.top4top.io/p_3780dq4p22.png">
-
-<h2 id="user-name">User Name</h2>
-
-<div id="user-email" class="user-gmail">
-user@gmail.com
+<div class="header">
+    <div class="header-left">
+        <button class="action-btn" onclick="toggleDropdown()" id="menuBtn4">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="brand">
+            <div class="brand-logo">
+                <img src="https://e.top4top.io/p_3812pnqwm6.jpg" alt="Profile">
+            </div>
+            <div class="brand-text"><h1>Developer</h1><p>Profile & Social</p></div>
+        </div>
+    </div>
+    <div class="header-right">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn4" title="Ganti Tema">
+            <i class="fa-solid fa-moon" id="themeIcon4"></i>
+        </button>
+    </div>
 </div>
-
-<div style="
-display:inline-block;
-padding:6px 14px;
-background:rgba(34,197,94,.15);
-color:#22c55e;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-margin:12px 0;
-">
-● VERIFIED USER
+<div style="margin-top:20px;">
+    <div class="profile-card card-upin">
+        <img src="https://f.top4top.io/p_3812ybvy11.jpg">
+        <h2>ReyCloudDev</h2>
+        <div class="role">Founder & Fullstack Developer</div>
+        <p>Web Developer • Script Developer • UI Designer</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 20px 18px;">
+        <span class="card-upin" style="background:#f7df1e;color:#000;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;">JavaScript</span>
+        <span class="card-upin" style="background:#e34f26;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;">HTML5</span>
+        <span class="card-upin" style="background:#1572b6;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;">CSS3</span>
+        <span class="card-upin" style="background:#3776ab;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;">Python</span>
+        <span class="card-upin" style="background:#000;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;border:2px solid #333;">Next.js</span>
+    </div>
+    <div class="section-title"><i class="fa-solid fa-share-nodes"></i> Social Media</div>
+    <div class="contact-list">
+        <a href="https://wa.me/6281260512743" class="contact-item card-upin">
+            <div class="left"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i><div><h3>WhatsApp</h3><p>Fast Response</p></div></div>
+            <i class="fa-solid fa-chevron-right" style="color:var(--soft);"></i>
+        </a>
+        <a href="https://t.me/ReyCloudDev" class="contact-item card-upin">
+            <div class="left"><i class="fa-brands fa-telegram" style="color:#0088cc;"></i><div><h3>Telegram</h3><p>Official Account</p></div></div>
+            <i class="fa-solid fa-chevron-right" style="color:var(--soft);"></i>
+        </a>
+        <a href="https://instagram.com/reycloud_dev" class="contact-item card-upin">
+            <div class="left"><i class="fa-brands fa-instagram" style="color:#E1306C;"></i><div><h3>Instagram</h3><p>@reycloud_dev</p></div></div>
+            <i class="fa-solid fa-chevron-right" style="color:var(--soft);"></i>
+        </a>
+    </div>
 </div>
-
-<p>
-Logged in via Google Auth System
-</p>
-
-<div style="
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:18px;
-">
-
-<div style="
-background:rgba(255,255,255,.04);
-padding:14px;
-border-radius:18px;
-">
-<div style="
-font-size:11px;
-color:#94a3b8;
-margin-bottom:4px;
-">
-ROLE
 </div>
-
-<div style="font-weight:700;">
-USER
+<div class="audio-player card-upin" id="audioPlayer">
+    <div class="audio-cover" id="audioCover">
+        <img src="https://files.catbox.moe/9u1xpa.jpg" alt="Album Cover">
+    </div>
+    <div class="audio-info">
+        <h5 id="audioTitle">Night Drive</h5>
+        <p id="audioArtist">Synthwave Boy</p>
+    </div>
+    <div class="audio-right-controls">
+        <div class="audio-controls">
+            <button class="audio-btn" onclick="prevTrack()" id="prevBtn"><i class="fa-solid fa-backward-step"></i></button>
+            <button class="audio-btn play" id="playBtn" onclick="togglePlay()"><i class="fa-solid fa-play" id="playIcon"></i></button>
+            <button class="audio-btn" onclick="nextTrack()" id="nextBtn"><i class="fa-solid fa-forward-step"></i></button>
+        </div>
+        <div class="audio-vol">
+            <i class="fa-solid fa-volume-high" id="volIcon"></i>
+            <input type="range" min="0" max="100" value="70" oninput="setVolume(this.value)" id="volumeSlider">
+        </div>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
 </div>
-
+<div class="navbar card-upin">
+    <button class="nav-btn active" onclick="showPage('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></button>
+    <button class="nav-btn" onclick="showPage('tools', this)"><i class="fa-solid fa-layer-group"></i><span>Tools</span></button>
+    <button class="nav-btn" onclick="showPage('info', this)"><i class="fa-solid fa-circle-info"></i><span>Info</span></button>
+    <button class="nav-btn" onclick="showPage('contact', this)"><i class="fa-solid fa-user"></i><span>Profile</span></button>
 </div>
-
-<div style="
-background:rgba(255,255,255,.04);
-padding:14px;
-border-radius:18px;
-">
-<div style="
-font-size:11px;
-color:#94a3b8;
-margin-bottom:4px;
-">
-STATUS
-</div>
-
-<div style="
-font-weight:700;
-color:#22c55e;
-">
-ONLINE
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="section-title">Developer</div>
-
-<div class="profile-card">
-
-<img src="https://k.top4top.io/p_3805wy74y4.jpg">
-
-<h2>ReyCloudDev</h2>
-
-<div style="
-color:#ec4899;
-font-size:13px;
-margin-bottom:10px;
-">
-Founder & Fullstack Developer
-</div>
-
-<p>
-Web Developer • Script Developer • UI Designer
-</p>
-
-</div>
-
-<div style="
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:8px;
-margin-bottom:15px;
-">
-
-<span style="
-background:#f7df1e;
-color:#000;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-">
-JavaScript
-</span>
-
-<span style="
-background:#e34f26;
-color:#fff;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-">
-HTML5
-</span>
-
-<span style="
-background:#1572b6;
-color:#fff;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-">
-CSS3
-</span>
-
-<span style="
-background:#3776ab;
-color:#fff;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-">
-Python
-</span>
-
-<span style="
-background:#000;
-color:#fff;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-border:1px solid #333;
-">
-Next.js
-</span>
-
-</div>
-
-<div class="section-title">Social Media</div>
-
-<div class="contact-list">
-
-<a href="https://wa.me/6281260512743" class="contact-item">
-
-<div class="left">
-<i class="fa-brands fa-whatsapp" style="color:#25D366;"></i>
-
-<div>
-<h3>WhatsApp</h3>
-<p>Fast Response</p>
-</div>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</a>
-
-<a href="https://t.me/ReyCloudDev" class="contact-item">
-
-<div class="left">
-<i class="fa-brands fa-telegram" style="color:#0088cc;"></i>
-
-<div>
-<h3>Telegram</h3>
-<p>Official Account</p>
-</div>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</a>
-
-<a href="https://instagram.com/reycloud_dev" class="contact-item">
-
-<div class="left">
-<i class="fa-brands fa-instagram" style="color:#E1306C;"></i>
-
-<div>
-<h3>Instagram</h3>
-<p>@reycloud_dev</p>
-</div>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</a>
-
-</div>
-
-</div>
-<!-- NAVBAR -->
-<div class="navbar">
-
-<button class="nav-btn active" onclick="showPage('home', this)">
-<i class="fa-solid fa-house"></i>
-<span>Home</span>
-</button>
-
-<button class="nav-btn" onclick="showPage('fitur', this)">
-<i class="fa-solid fa-layer-group"></i>
-<span>Fitur</span>
-</button>
-
-<button class="nav-btn" onclick="showPage('info', this)">
-<i class="fa-solid fa-circle-info"></i>
-<span>Info</span>
-</button>
-
-<button class="nav-btn" onclick="showPage('contact', this)">
-<i class="fa-solid fa-envelope"></i>
-<span>Contact</span>
-</button>
-
-</div>
-
 <script>
-// Fungsi load data user dari Google Auth (localStorage) saat halaman dibuka
-function loadUserData() {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-        const user = JSON.parse(userData);
-        
-        // Memasukkan data ke ID masing-masing
-        if(document.getElementById('user-name')) document.getElementById('user-name').innerText = user.name;
-        if(document.getElementById('user-email')) document.getElementById('user-email').innerText = user.email;
-        if(document.getElementById('welcome-text')) document.getElementById('welcome-text').innerText = "Halo, " + user.name + "!";
-        
-        if(document.getElementById('user-img-header')) document.getElementById('user-img-header').src = user.picture;
-        if(document.getElementById('user-img-profile')) document.getElementById('user-img-profile').src = user.picture;
+document.querySelectorAll('.video-bg').forEach(video => {
+    video.play().catch(() => {
+        document.addEventListener('touchstart', () => { video.play(); }, { once: true });
+        document.addEventListener('click', () => { video.play(); }, { once: true });
+    });
+});
+const playlist = [
+    { title: "CLBK", artist: "Maman Fvndy Rmx", src: "https://a.top4top.io/m_381221i1q3.mp3", cover: "https://f.top4top.io/p_3812ybvy11.jpg" },
+    { title: "Freaks", artist: "Surf Curse", src: "https://files.catbox.moe/qo5jed.m4a", cover: "https://files.catbox.moe/9u1xpa.jpg" },
+    { title: "The Man Who Can`t Be Moved", artist: "The Script", src: "https://files.catbox.moe/1rcytl.mp3", cover: "https://files.catbox.moe/9u1xpa.jpg" },
+    { title: "impostor Syndrome", artist: "Sidney Gish", src: "https://files.catbox.moe/v96vpy.m4a", cover: "https://files.catbox.moe/9u1xpa.jpg" },
+    { title: "The World is Ugly", artist: "My Chemical Romance", src: "https://files.catbox.moe/0ysqlj.m4a", cover: "https://files.catbox.moe/9u1xpa.jpg" }
+];
+function toggleDropdown() {
+    document.getElementById('dropdownMenu').classList.toggle('show');
+}
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('dropdownMenu');
+    const menuBtns = ['menuBtn', 'menuBtn2', 'menuBtn3', 'menuBtn4'];
+    let clickedBtn = false;
+    menuBtns.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn && btn.contains(e.target)) clickedBtn = true;
+    });
+    if (!menu.contains(e.target) && !clickedBtn) {
+        menu.classList.remove('show');
+    }
+});
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+
+    document.querySelectorAll('[id^="themeIcon"]').forEach(icon => {
+        icon.className = newTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    });
+}
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.querySelectorAll('[id^="themeIcon"]').forEach(icon => {
+        icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    });
+}
+function showPage(pageId, btn){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    window.scrollTo(0,0);
+}
+let currentSlide = 0;
+const totalSlides = 2;
+function goToSlide(n){
+    currentSlide = n;
+    const track = document.getElementById('bannerTrack');
+    if(track) track.style.transform = `translateX(-${n * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === n));
+}
+let autoSlide = setInterval(() => {
+    goToSlide((currentSlide + 1) % totalSlides);
+}, 4000);
+let touchStartX = 0;
+let touchEndX = 0;
+const bannerSlider = document.getElementById('bannerSlider');
+if(bannerSlider) {
+    bannerSlider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        clearInterval(autoSlide);
+    }, {passive: true});
+
+    bannerSlider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        autoSlide = setInterval(() => {
+            goToSlide((currentSlide + 1) % totalSlides);
+        }, 4000);
+    }, {passive: true});
+}
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            goToSlide((currentSlide + 1) % totalSlides);
+        } else {
+            goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+        }
     }
 }
-
-// Jalankan auto-load data
-window.onload = loadUserData;
-
-function showPage(pageId, btn){
-
-document.querySelectorAll('.page').forEach(page=>{
-page.classList.remove('active');
-});
-
-document.getElementById(pageId).classList.add('active');
-
-document.querySelectorAll('.nav-btn').forEach(nav=>{
-nav.classList.remove('active');
-});
-
-btn.classList.add('active');
-
+function selectCategory(el){
+    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
 }
-
+let trackIndex = 0;
+let isPlaying = false;
+let audio = new Audio();
+let isLoading = false;
+audio.preload = "metadata";
+audio.volume = 0.7;
+function loadTrack(i){
+    if(isLoading) return;
+    isLoading = true;
+    trackIndex = i;
+    const track = playlist[i];
+    audio.pause();
+    audio.src = track.src;
+    audio.load();
+    document.getElementById('audioTitle').textContent = track.title;
+    document.getElementById('audioArtist').textContent = track.artist;
+    const coverImg = document.querySelector('#audioCover img');
+    if(coverImg && track.cover) coverImg.src = track.cover;
+    updateProgressBar(0);
+    isLoading = false;
+}
+function updateProgressBar(percent) {
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) progressBar.style.width = percent + '%';
+}
+function togglePlay(){
+    if(isLoading) return;
+    const icon = document.getElementById('playIcon');
+    const playBtn = document.getElementById('playBtn');
+    if(isPlaying){
+        audio.pause();
+        isPlaying = false;
+        icon.className = 'fa-solid fa-play';
+        playBtn.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+    } else {
+        const playPromise = audio.play();
+        if(playPromise !== undefined){
+            playPromise.then(() => {
+                isPlaying = true;
+                icon.className = 'fa-solid fa-pause';
+                playBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+            }).catch(error => {
+                isPlaying = false;
+                icon.className = 'fa-solid fa-play';
+                setTimeout(() => nextTrack(), 1000);
+            });
+        }
+    }
+}
+function nextTrack(){
+    if(isLoading) return;
+    audio.pause(); isPlaying = false;
+    document.getElementById('playIcon').className = 'fa-solid fa-play';
+    document.getElementById('playBtn').style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+    trackIndex = (trackIndex + 1) % playlist.length;
+    loadTrack(trackIndex);
+    setTimeout(() => { togglePlay(); }, 300);
+}
+function prevTrack(){
+    if(isLoading) return;
+    audio.pause(); isPlaying = false;
+    document.getElementById('playIcon').className = 'fa-solid fa-play';
+    document.getElementById('playBtn').style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+    trackIndex = (trackIndex - 1 + playlist.length) % playlist.length;
+    loadTrack(trackIndex);
+    setTimeout(() => { togglePlay(); }, 300);
+}
+function setVolume(val){
+    const volume = val / 100;
+    audio.volume = volume;
+    const slider = document.getElementById('volumeSlider');
+    if(slider) slider.value = val;
+    const volIcon = document.getElementById('volIcon');
+    if(volIcon) {
+        volIcon.className = 'fa-solid';
+        if (val == 0) volIcon.classList.add('fa-volume-xmark', 'muted');
+        else if (val < 30) volIcon.classList.add('fa-volume-off');
+        else if (val < 70) volIcon.classList.add('fa-volume-low');
+        else volIcon.classList.add('fa-volume-high');
+    }
+    localStorage.setItem('audioVolume', val);
+}
+function loadVolume() {
+    const savedVol = localStorage.getItem('audioVolume') || 70;
+    const slider = document.getElementById('volumeSlider');
+    if(slider) {
+        slider.value = savedVol;
+        setVolume(savedVol);
+    }
+}
+audio.addEventListener('timeupdate', () => {
+    if(audio.duration && !isNaN(audio.duration) && audio.duration > 0){
+        const progress = (audio.currentTime / audio.duration) * 100;
+        updateProgressBar(progress);
+    }
+});
+audio.addEventListener('ended', () => {
+    isPlaying = false;
+    document.getElementById('playIcon').className = 'fa-solid fa-play';
+    document.getElementById('playBtn').style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+    updateProgressBar(0);
+    nextTrack();
+});
+audio.addEventListener('error', () => {
+    isPlaying = false;
+    document.getElementById('playIcon').className = 'fa-solid fa-play';
+    updateProgressBar(0);
+    setTimeout(() => nextTrack(), 1500);
+});
+loadTrack(0);
+loadTheme();
+loadVolume();
 </script>
 
 </body>
