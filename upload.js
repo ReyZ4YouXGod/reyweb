@@ -1,33 +1,36 @@
-async function uploadFile() {
+const API_URL = "https://your-backend.vercel.app/api/upload";
+
+async function upload(){
     let file = document.getElementById("file").files[0];
-    if(!file) return alert("Pilih file dulu");
+    if(!file) return alert("pilih file dulu");
 
     let result = document.getElementById("result");
-    result.innerText = "Uploading...";
+    result.innerText = "uploading...";
 
     let form = new FormData();
     form.append("file", file);
 
-    try {
-        let res = await fetch("/api/upload", {
-            method: "POST",
-            body: form
+    try{
+        let res = await fetch(API_URL, {
+            method:"POST",
+            body:form
         });
 
         let data = await res.json();
 
-        if(data.link){
+        if(data.raw){
             result.innerHTML = `
-                <p>Success:</p>
-                <a href="${data.link}" target="_blank">${data.link}</a>
-            `;
+RAW LINK:<br>
+<code>${data.raw}</code>
 
-            navigator.clipboard.writeText(data.link);
+<br><br>
+<img src="${data.raw}" width="100%">
+            `;
         } else {
-            result.innerText = "Upload gagal";
+            result.innerText = "gagal upload";
         }
 
-    } catch(err){
-        result.innerText = "Server error";
+    } catch(e){
+        result.innerText = "server error";
     }
 }
