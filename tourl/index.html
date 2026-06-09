@@ -1,276 +1,97 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ToURL Modern</title>
-
+<title>Pro TO URL Uploader</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
-
 body{
-    background: linear-gradient(135deg,#0f1115,#121826);
-    color:#fff;
-    height:100vh;
+    margin:0;
+    font-family:Arial;
+    background:#0b0b0b;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
+    height:100vh;
 }
 
-/* BACK BUTTON */
-.back{
-    position:fixed;
-    top:15px;
-    left:15px;
-    background:#111827;
-    padding:8px 12px;
-    border-radius:10px;
-    color:#fff;
-    text-decoration:none;
-    font-size:13px;
-    border:1px solid #2a2f3a;
-}
-
-.back:hover{
-    background:#1f2937;
-}
-
-.container{
-    width:420px;
-    background:#1a1f2a;
-    border-radius:16px;
+.box{
+    width:360px;
     padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-
-.header{
-    font-size:20px;
-    font-weight:bold;
-    margin-bottom:15px;
+    background:#161616;
+    border-radius:14px;
     text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.6);
 }
 
-.dropzone{
-    border:2px dashed #4f7cff;
+.drop{
+    border:2px dashed #444;
     padding:25px;
     border-radius:12px;
-    text-align:center;
     cursor:pointer;
-    transition:0.2s;
-    background:#141824;
+    margin-bottom:15px;
 }
 
-.dropzone.dragover{
-    background:#20283a;
-    border-color:#6b8dff;
-}
-
-.select, button{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-}
-
-.select{
-    background:#111827;
-    color:#fff;
+.drop.dragover{
+    border-color:#00ff99;
+    background:#111;
 }
 
 button{
-    background:#4f7cff;
-    color:white;
+    width:100%;
+    padding:10px;
+    background:#00ff99;
+    border:none;
+    border-radius:8px;
     font-weight:bold;
     cursor:pointer;
 }
 
 button:hover{
-    background:#3b66ff;
-}
-
-.file-info{
-    margin-top:10px;
-    padding:10px;
-    background:#111827;
-    border-radius:10px;
-    font-size:13px;
-}
-
-.progress{
-    width:100%;
-    height:8px;
-    background:#2a2f3a;
-    border-radius:10px;
-    overflow:hidden;
-    margin-top:10px;
+    background:#00cc77;
 }
 
 .bar{
+    width:100%;
+    height:8px;
+    background:#222;
+    border-radius:10px;
+    margin-top:15px;
+    overflow:hidden;
+}
+
+.bar-fill{
     height:100%;
     width:0%;
-    background:#4f7cff;
+    background:#00ff99;
     transition:0.2s;
 }
 
-.result{
-    margin-top:12px;
-    background:#111;
-    padding:10px;
-    border-radius:10px;
-    font-size:13px;
-    word-break:break-all;
-}
-
-/* FOOTER */
-.footer{
-    margin-top:12px;
-    text-align:center;
-    font-size:12px;
-    color:#9ca3af;
-}
 a{
-    color:#6ea0ff;
-    text-decoration:none;
+    color:#00ff99;
 }
 </style>
 </head>
 <body>
 
-<a href="/dashboard" class="back">← Back to Dashboard</a>
+<div class="box">
 
-<div class="container">
-
-    <div class="header">TOURL UPLOADER</div>
-
-    <div class="dropzone" id="dropzone">
-        Drag & Drop file atau klik untuk pilih
+    <div id="drop" class="drop">
+        Drop file / click here
+        <input type="file" id="file" hidden>
     </div>
 
-    <input type="file" id="file" hidden>
+    <button onclick="uploadFile()">UPLOAD</button>
 
-    <div class="file-info" id="fileInfo">
-        Belum ada file dipilih
+    <div class="bar">
+        <div class="bar-fill" id="bar"></div>
     </div>
 
-    <select id="host" class="select">
-        <option value="catbox">Catbox</option>
-        <option value="uguu">Uguu</option>
-        <option value="cdn">Ikyy CDN</option>
-    </select>
-
-    <button onclick="upload()">UPLOAD</button>
-
-    <div class="progress">
-        <div class="bar" id="bar"></div>
-    </div>
-
-    <div class="result" id="result">Siap upload.</div>
-
-    <div class="footer">
-        Powered By <b>ReyCloudDev</b> X <b>Ikyy API</b>
-    </div>
+    <p id="result"></p>
 
 </div>
 
-<script>
-const dropzone = document.getElementById("dropzone");
-const fileInput = document.getElementById("file");
-const fileInfo = document.getElementById("fileInfo");
-const bar = document.getElementById("bar");
-const result = document.getElementById("result");
-
-dropzone.onclick = () => fileInput.click();
-
-dropzone.addEventListener("dragover", e => {
-    e.preventDefault();
-    dropzone.classList.add("dragover");
-});
-
-dropzone.addEventListener("dragleave", () => {
-    dropzone.classList.remove("dragover");
-});
-
-dropzone.addEventListener("drop", e => {
-    e.preventDefault();
-    dropzone.classList.remove("dragover");
-    fileInput.files = e.dataTransfer.files;
-    showFile();
-});
-
-fileInput.addEventListener("change", showFile);
-
-function showFile(){
-    const file = fileInput.files[0];
-    if(!file) return;
-
-    fileInfo.innerHTML = `
-        📄 ${file.name}<br>
-        📦 ${(file.size / 1024).toFixed(2)} KB
-    `;
-
-    result.innerText = "File siap diupload.";
-}
-
-async function upload(){
-    const file = fileInput.files[0];
-    const host = document.getElementById("host").value;
-
-    if(!file){
-        result.innerText = "Pilih file dulu.";
-        return;
-    }
-
-    const form = new FormData();
-    form.append("file", file);
-
-    result.innerText = "Mengunggah...";
-    bar.style.width = "0%";
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", `https://api.ikyyxd.my.id/uploads?host=${host}`);
-
-    xhr.upload.onprogress = e => {
-        if(e.lengthComputable){
-            bar.style.width = (e.loaded / e.total) * 100 + "%";
-        }
-    };
-
-    xhr.onload = async () => {
-        const data = JSON.parse(xhr.responseText);
-
-        let url = "";
-
-        if(host === "catbox") url = data.result;
-        if(host === "uguu") url = data.result?.files?.[0]?.url;
-        if(host === "cdn") url = data.result?.url;
-
-        if(!data.status){
-            result.innerText = data.error || "Upload gagal";
-            return;
-        }
-
-        await navigator.clipboard.writeText(url);
-
-        result.innerHTML = `
-            <b>Upload berhasil</b><br><br>
-            <a href="${url}" target="_blank">${url}</a><br><br>
-            Link sudah dicopy otomatis
-        `;
-    };
-
-    xhr.onerror = () => {
-        result.innerText = "Koneksi gagal.";
-    };
-
-    xhr.send(form);
-}
-</script>
+<script src="upload.js"></script>
 
 </body>
 </html>
