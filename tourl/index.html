@@ -1,41 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Pro Upload To URL</title>
+<title>TO URL PRO</title>
+
 <style>
 body{
     margin:0;
     font-family:Arial;
-    background:#0d0d0d;
-    color:#fff;
+    background:radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
 }
 
+/* glass effect */
 .box{
-    width:360px;
-    background:#181818;
+    width:380px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border:1px solid rgba(255,255,255,0.1);
     padding:20px;
-    border-radius:14px;
+    border-radius:16px;
     text-align:center;
+    box-shadow:0 0 25px rgba(0,255,153,0.1);
+}
+
+h3{
+    margin-top:0;
+    letter-spacing:1px;
 }
 
 input{
     width:100%;
     margin-top:10px;
+    color:white;
 }
 
 button{
     width:100%;
-    margin-top:10px;
     padding:10px;
+    margin-top:10px;
     background:#00ff99;
     border:none;
-    cursor:pointer;
     font-weight:bold;
+    cursor:pointer;
+    border-radius:8px;
 }
 
 button:hover{
@@ -45,24 +57,61 @@ button:hover{
 #result{
     margin-top:15px;
     word-break:break-all;
+    background:rgba(0,0,0,0.4);
+    padding:10px;
+    border-radius:10px;
+    font-size:13px;
 }
 
 a{
     color:#00ff99;
 }
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    opacity:0.7;
+    margin-bottom:10px;
+}
+
+.back{
+    cursor:pointer;
+    color:#aaa;
+}
+
+.back:hover{
+    color:#00ff99;
+}
 </style>
 </head>
+
 <body>
 
 <div class="box">
-    <h2>TO URL UPLOADER</h2>
+
+    <div class="topbar">
+        <span>TO URL SYSTEM</span>
+        <span class="back" onclick="goDashboard()">← dashboard</span>
+    </div>
+
+    <h3>UPLOAD FILE</h3>
 
     <input type="file" id="file">
-    <button onclick="uploadFile()">UPLOAD</button>
 
-    <div id="result"></div>
+    <button onclick="upload()">UPLOAD</button>
+
+    <div id="result">Ready...</div>
+
 </div>
 
 <script src="upload.js"></script>
+
+<script>
+function goDashboard(){
+    window.location.href = "/dashboard";
+}
+</script>
+
 </body>
 </html>
